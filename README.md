@@ -10,7 +10,7 @@ Kwikker is a dynamic social media application designed to facilitate seamless in
 - **Real-time Communication**: SignalR.
 - **Testing**: XUnit.
 - **Tools**: Git, Postman, Hangfire (for background tasks), AutoMapper, LINQ, Dynamic LINQ.
-- 
+  
 ## Restful Api Design
 
 - **Paging**: For efficient Api data fetching.
@@ -21,7 +21,7 @@ Kwikker is a dynamic social media application designed to facilitate seamless in
 - **Lazy Instantiation**: To manage Services and Repositories to be instantiated only when required for better performance.  
 - **Repository Pattern**: To abstract data access and make the application more modular.
 - **Dependency Injection**: To manage dependencies and enhance testability.
-- 
+  
 ##  Features
 
 - **Tweeting System**: Users can create, read, update, and delete tweets, retweeting and bookmarking.
