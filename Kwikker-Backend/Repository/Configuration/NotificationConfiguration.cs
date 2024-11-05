@@ -14,7 +14,7 @@ namespace Repository.Configuration
         public void Configure(EntityTypeBuilder<Notification> builder)
         {
             builder.HasKey(x=>x.Id);
-            builder.Property(x=>x.Message).HasMaxLength(100);
+         
             builder.Property(x => x.Type).HasMaxLength(10);
             builder.HasOne(x=>x.Receiver).WithMany(x=>x.notifications).HasForeignKey(x=>x.ReceiverId).OnDelete(DeleteBehavior.NoAction);
 

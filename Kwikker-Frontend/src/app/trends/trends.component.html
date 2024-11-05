@@ -1,48 +1,11 @@
 <div class="whats-happening-section p-3 ">
     <h5 class="fw-bold">What’s happening</h5>
-    <ul class="list-unstyled">
-      <li class="mb-3">
-        <a href="#" class="text-decoration-none ">
-          <div class="d-flex">
-            <div class="me-3">
-              <img src="assets/download.jpg" alt="News" >
-            </div>
-            <div>
-              <p class="mb-1 fw-bold">Some big news happening right now</p>
-              <span class="text-muted">Trending in #Technology</span>
-            </div>
-          </div>
-        </a>
+    <ul class="list-unstyled"  *ngFor="let trend of trends" >
+      <li class="mb-3 fw-bold trend" (click)="goToTrending(trend.hashtag)" >
+        {{trend.hashtag}}
       </li>
-      <li class="mb-3">
-        <a href="#" >
-          <div class="d-flex">
-            <div class="me-3">
-              <img src="assets/download.jpg" alt="News" >
-            </div>
-            <div>
-              <p class="mb-1 fw-bold">Another big news story</p>
-              <span class="text-muted">Trending in #WorldNews</span>
-            </div>
-          </div>
-        </a>
-      </li>
-      <li class="mb-3">
-        <a href="#" >
-          <div class="d-flex">
-            <div class="me-3">
-              <img src="assets/download.jpg" alt="News" >
-            </div>
-            <div>
-              <p class="mb-1 fw-bold">More things happening</p>
-              <span class="text-muted">Trending in #Entertainment</span>
-            </div>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="#" >Show more</a>
-      </li>
+      
+      
     </ul>
   </div>
   

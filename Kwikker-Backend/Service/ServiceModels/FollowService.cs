@@ -7,6 +7,7 @@ using Shared.RequestFeatures;
 using Entities.Models;
 using System.Dynamic;
 using StackExchange.Redis;
+using Microsoft.AspNetCore.SignalR;
 namespace Service.ServiceModels
 {
     internal sealed class FollowService : IFollowService
@@ -16,10 +17,10 @@ namespace Service.ServiceModels
         private readonly IMapper _mapper;
         private readonly IDatabase _redisCache;
         private readonly INotificationService _notification;
-
+        private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IUserService _userService;
         public FollowService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper, IConnectionMultiplexer redisConnection, INotificationService notification, IUserService userService)
+        logger, IMapper mapper, IConnectionMultiplexer redisConnection, IHubContext<NotificationHub> hubContext, INotificationService notification, IUserService userService)
         {
             _repository = repository;
             _logger = logger;
@@ -27,7 +28,7 @@ namespace Service.ServiceModels
             _notification = notification;
             _userService = userService;
             _redisCache = redisConnection.GetDatabase();
-
+            _hubContext = hubContext;
         }
 
         public async Task CreateFollow(int followerId, int followeeId, bool trackChanges)
@@ -46,8 +47,10 @@ namespace Service.ServiceModels
             var cacheKey = "TimeLinefollow" + followerId;
             await _redisCache.KeyDeleteAsync(cacheKey);
 
-            await _notification.CreateNotification(followerId, "Follow", followee.ID, $"{follower.Username} has  Followed you");
-
+            //notify user
+            string notificationMessage = $"{follower.Username} has followed you";
+            await _notification.CreateNotification(followerId, "Follow", followee.ID);
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
             await _repository.SaveAsync();
         }
 

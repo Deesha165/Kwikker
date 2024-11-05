@@ -1,0 +1,20 @@
+
+
+  <!-- Content Section (Posts, Likes, etc.) -->
+  <div *ngIf="relatedTweets.length > 0; else noTweets">
+    <div *ngFor="let tweet of relatedTweets">
+      <app-tweet
+      [userId]="userId"
+      [tweet]="tweet"
+        >
+      </app-tweet>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading">Loading...</div>
+  </div>
+
+  <!-- No Tweets Template -->
+  <ng-template #noTweets class="tweet-container">
+    <p style="text-align: center;">No tweets found</p>
+  </ng-template>

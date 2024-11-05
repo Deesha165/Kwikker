@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.ExceptionModels;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.Storage;
 using Service.Contracts.Contracts;
 using Service.DataShaping;
@@ -23,19 +24,20 @@ namespace Service.ServiceModels
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly INotificationService _notification;
-
+        private readonly IHubContext<NotificationHub> _hubContext;
         private readonly StackExchange.Redis.IDatabase _redisCache;
 
         private string CacheKey = "Retweets";  // Cache key
         private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);  // Cache expiration time
         public RetweetService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper, IConnectionMultiplexer redisConnection, INotificationService notification)
+        logger, IMapper mapper, IConnectionMultiplexer redisConnection, IHubContext<NotificationHub> hubContext, INotificationService notification)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _notification = notification;
             _redisCache = redisConnection.GetDatabase();
+            _hubContext = hubContext;
         }
         public async Task CreateRetweet(int userId, int tweetid, bool trackChanges)
         {
@@ -48,7 +50,10 @@ namespace Service.ServiceModels
             _repository.RetweetRepository.CreateRetweet(userId, tweetid);
 
             //notify user
-            await _notification.CreateNotification(userId, "Retweet", tweet.UserID, $"{user.Username} has Retweeted your tweet");
+            string notificationMessage = $"{user.Username} has retweeted your tweet";
+            await _notification.CreateNotification(userId, "Retweet", tweet.UserID);
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
+
 
             await _repository.SaveAsync();
         }

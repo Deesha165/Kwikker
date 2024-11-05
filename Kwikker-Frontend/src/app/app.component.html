@@ -16,8 +16,9 @@
     <div class="grid-item">
       
       <div class="cus-margin">
-        <app-trends ></app-trends>
+        <app-trends [trends]="trends"   [userId]="userId"></app-trends>
       </div>
+      
       
 
         <app-suggested-to-follow  [suggestedUsers]="users" [followerId]="userId"/>

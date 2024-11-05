@@ -20,6 +20,7 @@ namespace Kwikker_Backend.Controllers
         }
         [HttpGet("{hashtag}")]
         public async Task<IActionResult> GetTweetsByTrend(string hashtag)
+        
         {
            var tweets= await _service.trendService.GetTweetsByTrend(hashtag);
            

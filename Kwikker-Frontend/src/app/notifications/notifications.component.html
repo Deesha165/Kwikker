@@ -1,0 +1,21 @@
+<ul class="list-unstyled" style="margin:40px 20px">
+    <li *ngFor="let notification of notificationEntities" class="mb-3" style=" border-bottom: 1px solid rgb(74, 70, 70); ">
+       <div class="fw-bold">
+         <img [src]="notification.senderProfilePicture" >
+      
+      <span (click)="goToProfile(notification.senderId)"    style="cursor:pointer">
+         {{notification.senderUserName}} ({{notification.senderEmail}}) 
+       
+      </span>   
+        has {{notification.type}} 
+        <span *ngIf="notification.type!='Follow'; else other">your tweet</span>
+       <ng-template #other>
+               <span>you</span>
+       </ng-template>
+             
+       </div>
+       <span style="margin-left:20px">at {{notification.createdAt |date: 'yyyy/MM/dd HH:MM'}}</span>
+    
+    </li>
+    
+  </ul>

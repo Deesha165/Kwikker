@@ -30,7 +30,7 @@ namespace Repository.RepositoryModels
 
         public async Task<IDictionary<string, Trend>> GetExistingTrends(List<string> trends)
         {
-            var existingTrends=await FindByCondition(x => trends.Contains(x.Hashtag), trackChanges: true).ToDictionaryAsync(x => x.Hashtag,x=>x);
+            var existingTrends=await FindByCondition(x => trends.Contains(x.hashtag), trackChanges: true).ToDictionaryAsync(x => x.hashtag,x=>x);
             return existingTrends;
         }
 
@@ -41,9 +41,9 @@ namespace Repository.RepositoryModels
 
         public async Task<IEnumerable<Tweet>> GetTweetsByTrend(string hashtag)
         {
-            var trend = await RepositoryContext.Trends.FirstOrDefaultAsync(x => x.Hashtag.Equals(hashtag));
+            var trend = await RepositoryContext.Trends.FirstOrDefaultAsync(x => x.hashtag.Equals(hashtag));
             if (trend == null) return Enumerable.Empty<Tweet>();    
-            var tweets = await RepositoryContext.TweetTrends.Where(x => x.TrendId.Equals(trend.Id)).Include(x => x.Tweet).Select(x=>x.Tweet).ToListAsync();
+            var tweets = await RepositoryContext.TweetTrends.Where(x => x.TrendId.Equals(trend.Id)).Include(x => x.Tweet).ThenInclude(y=>y.User).Select(x=>x.Tweet).ToListAsync();
             
 
             return tweets!;

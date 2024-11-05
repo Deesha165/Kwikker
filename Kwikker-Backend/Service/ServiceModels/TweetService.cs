@@ -136,7 +136,7 @@ namespace Service.ServiceModels
                 {
                     newTrends.Add(new Trend()
                     {
-                        Hashtag = trend,
+                        hashtag = trend,
                         Occurrences = 1,
                         LastOccurred = DateTime.Now,
                         DecayScore = CalculateDecayScore(1, DateTime.Now)

@@ -18,13 +18,5 @@ namespace Kwikker_Backend.Controllers
         }
        
 
-        [HttpPut("user/{notificationId:int}/read")]
-        public async Task<IActionResult> MarkNotificationAsRead(int notificationId)
-        {
-           await _service.NotificationService.MarkAsReadAsync(notificationId,trackChanges:true);
-
-            return NoContent();
-        }
-
     }
 }

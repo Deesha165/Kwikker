@@ -14,10 +14,10 @@ namespace Entities.DomainModels
 
         public int ReceiverId { get; set; }  
         public string? Type { get; set; }  
-        public string Message { get; set; } = null!; 
+     
         public int SenderId { get; set; } 
     
-        public DateTime CreatedAt { get; set; }= DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }= DateTime.Now;
         public bool IsRead { get; set; }  
 
      

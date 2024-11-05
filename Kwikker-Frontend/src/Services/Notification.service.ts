@@ -1,16 +1,21 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CreatedNotification } from '../Models/Notification.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
+
+  private NotificationsUrl='https://localhost:7246/api/Notifications';
+
   private hubConnection!: signalR.HubConnection;
   private notificationCount = new BehaviorSubject<number>(0);
   notificationCount$ = this.notificationCount.asObservable();
 
-  constructor() {
+  constructor(private http:HttpClient) {
     this.startConnection();
     this.addNotificationListener();
   }
@@ -41,4 +46,11 @@ export class NotificationService {
   resetNotificationCount() {
     this.notificationCount.next(0);
   }
+
+
+
+  getNotifications(receiverId: number): Observable< CreatedNotification[]> {
+    return this.http.get<CreatedNotification[]>(`${this.NotificationsUrl}/user/${receiverId}`);
+}
+
 }

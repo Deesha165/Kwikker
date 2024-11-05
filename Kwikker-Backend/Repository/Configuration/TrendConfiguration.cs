@@ -15,7 +15,7 @@ namespace Repository.Configuration
         public void Configure(EntityTypeBuilder<Trend> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasIndex(t => t.Hashtag).IsUnique();
+            builder.HasIndex(t => t.hashtag).IsUnique();
             builder.HasIndex(t => t.DecayScore);
         }
     }

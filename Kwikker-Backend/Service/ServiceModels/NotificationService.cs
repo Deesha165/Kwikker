@@ -27,30 +27,23 @@ namespace Service.ServiceModels
           
         }
 
-        public async Task CreateNotification(int senderId, string type, int receiverId, string message)
+        public async Task CreateNotification(int senderId, string type, int receiverId)
         {
       
-             _repository.NotificationRepository.CreateNotification(senderId,type,receiverId,message);
+             _repository.NotificationRepository.CreateNotification(senderId,type,receiverId);
            await _repository.SaveAsync();
         }
 
         public async Task<IEnumerable<NotificationDTO>> GetUserNotificationsAsync(int receiverId,bool trackChanges)
         {
-            var notificationEntities=await _repository.NotificationRepository.GetUserNotificationsAsync(receiverId, trackChanges);
+            var notifications=await _repository.NotificationRepository.GetUserNotificationsAsync(receiverId, trackChanges);
 
-            if(notificationEntities is null) return Enumerable.Empty<NotificationDTO>();    
+            if(notifications is null) return Enumerable.Empty<NotificationDTO>();    
 
-           var notifications= _mapper.Map<IEnumerable<NotificationDTO>>(notificationEntities);
+           
             return notifications;
         }
 
-        public async Task MarkAsReadAsync(int notificationId,bool trackChanges)
-        {
-            var notification = await  _repository.NotificationRepository.GetNotification(notificationId, trackChanges);
-
-            if (notification is null) throw new NotFoundException("this notification doesn't exist");
-            notification.IsRead = true;
-            await _repository.SaveAsync();
-        }
+     
     }
 }

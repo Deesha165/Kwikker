@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-   public record TrendDTO(string Hashtag);
+   public record TrendDTO(string hashtag);
 }

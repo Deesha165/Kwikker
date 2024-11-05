@@ -140,3 +140,11 @@ a{
   text-align: center;
   background-color: rgb(236, 234, 111);
 }
+.trend{
+  font-size: 16px; 
+  cursor: pointer;
+}
+.trend:hover{
+  background-color: rgb(38, 39, 40);
+  transition: ease-in-out .2s;
+}
