@@ -48,8 +48,9 @@ namespace Service.ServiceModels
             await _redisCache.KeyDeleteAsync(cacheKey);
 
             //notify user
-            string notificationMessage = $"{follower.Username} has followed you";
-            await _notification.CreateNotification(followerId, "Follow", followee.ID);
+            string notificationMessage = $"{follower.UserName} has followed you";
+            
+            await _notification.CreateNotification(followerId, "Follow", followee.Id);
             await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
             await _repository.SaveAsync();
         }

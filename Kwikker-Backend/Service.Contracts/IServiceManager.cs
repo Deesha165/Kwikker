@@ -18,6 +18,9 @@ namespace Service.Contracts
         ITrendService trendService { get; }
        ITimelineService TimelineService { get; }    
         INotificationService NotificationService { get; }
-       
+
+        IAuthenticationService AuthenticationService { get; }
+
+
     }
 }

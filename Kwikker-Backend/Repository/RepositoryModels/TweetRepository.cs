@@ -75,7 +75,7 @@ namespace Repository.RepositoryModels
         .Join(
             RepositoryContext.Set<User>(),        // Join with Users table
             tweet => tweet.UserID,                // Foreign key in Tweet
-            user => user.ID,                      // Primary key in User
+            user => user.Id,                      // Primary key in User
             (tweet, user) => new Tweet                          // Create a new Tweet instance
             {
                 ID = tweet.ID,

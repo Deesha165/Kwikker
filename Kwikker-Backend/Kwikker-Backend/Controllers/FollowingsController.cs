@@ -17,6 +17,7 @@ namespace Kwikker_Backend.Controllers
         [HttpPost("{followerId:int}/follows/{followeeId:int}")]
         public async Task<IActionResult> UserFollowOther(int followerId,int followeeId)
         {
+            
           await _service.FollowService.CreateFollow(followerId, followeeId, trackChanges: false);
           
             return Ok();

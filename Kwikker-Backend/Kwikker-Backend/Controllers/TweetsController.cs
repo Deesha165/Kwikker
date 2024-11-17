@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,6 +13,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace Kwikker_Backend.Controllers
 {
     [Route("api/[controller]")]
+   
     [ApiController]
     public class TweetsController : ControllerBase
     {

@@ -46,7 +46,7 @@ namespace Repository.RepositoryModels
                .Join(
                     RepositoryContext.Set<User>(), // Join with Users table
                     f => f.FolloweeID,                 // Foreign key in Follow
-                    u => u.ID,                      // Primary key in User
+                    u => u.Id,                      // Primary key in User
                     (f, u) => u                  // Select entire User entity
                 );
 
@@ -67,7 +67,7 @@ namespace Repository.RepositoryModels
                 .Join(
                     RepositoryContext.Set<User>(), // Join with Users table
                     f => f.FollowerID,                 // Foreign key in Follow
-                    u => u.ID,                      // Primary key in User
+                    u => u.Id,                      // Primary key in User
                     (f, u) => u                  // Select entire User entity
                 );
 

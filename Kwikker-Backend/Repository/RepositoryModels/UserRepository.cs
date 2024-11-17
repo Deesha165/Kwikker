@@ -17,7 +17,7 @@ namespace Repository.RepositoryModels
 
         public async Task<User> GetUser( int id, bool trackChanges)
         {
-            var result= await FindByCondition(x => x.ID.Equals(id), trackChanges: false).SingleOrDefaultAsync();
+            var result= await FindByCondition(x => x.Id.Equals(id), trackChanges: false).SingleOrDefaultAsync();
             return result!;
         }
         public async Task<int> GetUsersCount()

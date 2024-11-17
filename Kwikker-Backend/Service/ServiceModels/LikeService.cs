@@ -46,7 +46,7 @@ namespace Service.ServiceModels
 
 
             // Notify user
-            string notificationMessage = $"{user.Username} has like your tweet";
+            string notificationMessage = $"{user.UserName} has like your tweet";
             await _notification.CreateNotification(userId, "Liked", tweet.UserID);
 
             // Send real-time notification via SignalR

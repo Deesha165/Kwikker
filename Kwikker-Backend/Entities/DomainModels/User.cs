@@ -1,4 +1,5 @@
 ﻿using Entities.DomainModels;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,10 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Entities.Models
 {
-    public class User
+    public class User:IdentityUser<int>
     {
-        public int ID { get; set; } // Primary Key
-        public string Username { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public string PasswordHash { get; set; } = null!;
+   
+     
         public string? ProfilePicture { get; set; } // Could be a URL or a file path
         public string? Bio { get; set; }
         public DateTime CreatedAt { get; set; }

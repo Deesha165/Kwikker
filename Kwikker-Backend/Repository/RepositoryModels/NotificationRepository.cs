@@ -46,9 +46,9 @@ namespace Repository.RepositoryModels
                     n.Id,
                     n.Type!,
                     n.CreatedAt,
-                    n.Sender!.ID,
-                    n.Sender.Username,
-                    n.Sender.Email,
+                    n.Sender!.Id,
+                    n.Sender.UserName!,
+                    n.Sender.Email!,
                     n.Sender.ProfilePicture!
                 ))
                 .ToListAsync();

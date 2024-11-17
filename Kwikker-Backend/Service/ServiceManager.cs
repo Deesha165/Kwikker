@@ -12,6 +12,9 @@ using Shared.DTOs;
 using Microsoft.Extensions.Caching.Memory;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.SignalR;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace Service
 {
@@ -29,8 +32,11 @@ namespace Service
         private readonly Lazy<ITimelineService> _timelineService;
 
         private readonly Lazy<INotificationService> _notificationService;
+        private readonly Lazy<IAuthenticationService> _authenticationService;
         public ServiceManager
-            (IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper, IConnectionMultiplexer redisConnection, IDataShaper<TweetDTO> dataShaper,IHubContext<NotificationHub> hubContext)
+          (IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper,
+            IConnectionMultiplexer redisConnection, IDataShaper<TweetDTO> dataShaper,
+            IHubContext<NotificationHub> hubContext, UserManager<User> userManager,IConfiguration configuration)
         {
             
             _userService = new Lazy<IUserService>(() => new
@@ -60,7 +66,9 @@ namespace Service
             _timelineService = new Lazy<ITimelineService>(() => new
            TimelineService(repositoryManager, logger, mapper,_followService.Value,_tweetService.Value));
 
-     
+            _authenticationService = new Lazy<IAuthenticationService>(() =>
+                             new AuthenticationService(logger, mapper, userManager,configuration));
+
 
         }
 
@@ -83,5 +91,6 @@ namespace Service
 
         public INotificationService NotificationService => _notificationService.Value;
 
+        public IAuthenticationService AuthenticationService => _authenticationService.Value;
     }
 }

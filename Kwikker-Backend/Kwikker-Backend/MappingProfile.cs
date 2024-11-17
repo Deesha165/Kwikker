@@ -10,6 +10,10 @@ namespace Kwikker_Backend
         public MappingProfile()
         {
             // Source to Destination mappings
+            CreateMap<UserForRegistrationDto, User>();
+
+
+
             CreateMap<User, GeneralUserDTO>();
             CreateMap<User, UserDTO>();
             CreateMap<TweetForCreationDTO, Tweet>();
@@ -17,7 +21,7 @@ namespace Kwikker_Backend
             // Mapping from Tweet to TweetDTO
             CreateMap<Tweet, TweetDTO>()
                 .ForCtorParam("profilePicture", opt => opt.MapFrom(src => src.User.ProfilePicture )) // Default to empty string if null
-                .ForCtorParam("userName", opt => opt.MapFrom(src => src.User.Username)); // Maps User's Username to TweetDTO's userName
+                .ForCtorParam("userName", opt => opt.MapFrom(src => src.User.UserName)); // Maps User's Username to TweetDTO's userName
 
             CreateMap<TweetForUpdateDTO, Tweet>();
             CreateMap<Trend, TrendDTO>();

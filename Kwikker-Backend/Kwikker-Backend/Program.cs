@@ -22,8 +22,14 @@ namespace Kwikker_Backend
             // 2. Add services to the container.
             builder.Services.AddSignalR();
             builder.Services.ConfigureRedis(builder.Configuration);
+
+            builder.Services.AddAuthentication();
+            builder.Services.ConfigureIdentity();
+            builder.Services.ConfigureJWT(builder.Configuration);
+
             builder.Services.ConfigureRepositoryManager();
             builder.Services.ConfigureServiceManager();
+
             builder.Services.AddScoped<ITrendService, TrendService>();
             builder.Services.ConfigureHangfire(builder.Configuration);
             builder.Services.AddHangfireServer(); // Hangfire service
@@ -64,6 +70,7 @@ namespace Kwikker_Backend
             app.UseCors("CorsPolicy");
 
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Map Controllers and SignalR Hub

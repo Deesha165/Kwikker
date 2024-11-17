@@ -1,11 +1,12 @@
 ﻿using Entities.DomainModels;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repository.Configuration;
 
 namespace Repository
 {
-    public class RepositoryContext:DbContext
+    public class RepositoryContext : IdentityDbContext<User,ApplicationRole,int>
     {
         public RepositoryContext(DbContextOptions options)
          : base(options)
@@ -14,7 +15,10 @@ namespace Repository
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+
+           
             modelBuilder.ApplyConfiguration(new LikeConfiguration());
             modelBuilder.ApplyConfiguration(new TweetConfiguration());
             modelBuilder.ApplyConfiguration(new RetweetConfiguration());
@@ -26,7 +30,6 @@ namespace Repository
 
         }
         public DbSet<Follow>Follows { get; set; }
-        public DbSet<User> Users { get;  set; }
         public DbSet<Tweet> Tweets { get; set; }    
         public DbSet<Like> Likes { get; set; }
         public DbSet<Retweet> Retweets { get; set; }    

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 
 namespace Kwikker_Backend.Controllers
 {
     [Route("api/[controller]")]
+    
     [ApiController]
     public class TrendsController : ControllerBase
     {

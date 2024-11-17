@@ -50,7 +50,7 @@ namespace Service.ServiceModels
             _repository.RetweetRepository.CreateRetweet(userId, tweetid);
 
             //notify user
-            string notificationMessage = $"{user.Username} has retweeted your tweet";
+            string notificationMessage = $"{user.UserName} has retweeted your tweet";
             await _notification.CreateNotification(userId, "Retweet", tweet.UserID);
             await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
 

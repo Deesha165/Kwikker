@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Service.Contracts;
@@ -10,6 +11,7 @@ using System.Text.Json;
 namespace Kwikker_Backend.Controllers
 {
     [Route("api/[controller]")]
+   // [Authorize]
     [ApiController]
     public class TimelinesController : ControllerBase
     {
