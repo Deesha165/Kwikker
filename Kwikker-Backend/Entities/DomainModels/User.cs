@@ -18,6 +18,9 @@ namespace Entities.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
+
         public ICollection<Tweet> Tweets { get; set; }=new List<Tweet>();   
         public ICollection<Follow> Followers { get; set; } = new HashSet<Follow>();    
         public ICollection<Like> Likes { get; set; } = new List<Like>();
