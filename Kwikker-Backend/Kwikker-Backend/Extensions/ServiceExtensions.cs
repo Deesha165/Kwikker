@@ -26,7 +26,7 @@ namespace Kwikker_Backend.Extensions
             {
                 options.AddPolicy("CorsPolicy", builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithExposedHeaders("X-Pagination");
+                    builder.WithOrigins("http://localhost:49917").AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithExposedHeaders("X-Pagination");
             });
             }
             );    
@@ -98,7 +98,8 @@ configuration)
                     ValidIssuer = jwtSettings["validIssuer"],
                     ValidAudience = jwtSettings["validAudience"],
                     IssuerSigningKey = new
-SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
         }

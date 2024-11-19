@@ -11,7 +11,7 @@ using System.Text.Json;
 namespace Kwikker_Backend.Controllers
 {
     [Route("api/[controller]")]
-   // [Authorize]
+    [Authorize]
     [ApiController]
     public class TimelinesController : ControllerBase
     {

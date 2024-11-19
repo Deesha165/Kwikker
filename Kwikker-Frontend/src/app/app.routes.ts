@@ -6,6 +6,8 @@ import { FolloweesComponent } from './followees/followees.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { Component } from '@angular/core';
 import { TrendingListComponent } from './trending-list/trending-list.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { LogInComponent } from './log-in/log-in.component';
 
 export const routes: Routes = 
 [   {path:'home',component:HomeTimelineComponent} , 
@@ -14,6 +16,8 @@ export const routes: Routes =
     {path:'followees/:id',component:FolloweesComponent},
     {path:'notifications/:id',component:NotificationsComponent},
     {path:'trends/:hashtag/:id' , component:TrendingListComponent},
-    { path: '**', redirectTo: '/home' }
+    {path:'signup',component:SignUpComponent},
+    {path:'login',component:LogInComponent},
+    { path: '**', redirectTo: '/signup' }
 
 ];

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CreatedUser } from '../../Models/User.model';
 import { FollowService } from '../../Services/Follow.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-suggested-to-follow',
   standalone: true,
@@ -12,15 +13,25 @@ import { Router } from '@angular/router';
 })
 export class SuggestedToFollowComponent {
   
-  @Input()
   suggestedUsers :CreatedUser[]=[];
  @Input()
   followerId:number=0;
   followStates: { [userId: number]: boolean } = {};
  
-
-
 constructor (private followService:FollowService,private router:Router){}
+
+
+getSuggestedFollowers(): void {
+  this.followService.getSuggestedUsersToFollow(this.followerId).subscribe(
+    (data: CreatedUser[]) => {
+      this.suggestedUsers = data;
+      console.log('process done successfuly');
+    },
+    (error:HttpErrorResponse) => {
+      console.error('Error fetching suggested users', error.status);
+    }
+  );
+}
 
 checkFollow(followeeId: number): void {
 

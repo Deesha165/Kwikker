@@ -1,30 +1,23 @@
-<!-- app.component.html -->
 <div class="grid-container">
-    <div class="grid-item " >
-      <app-side-bar [userId]="userId" ></app-side-bar>
-    </div>
-  
+  <div class="grid-item">
+    <app-side-bar 
+        [userId]="userId" 
+        *ngIf="routePart.toLowerCase() !== 'signup' && routePart.toLowerCase() !== 'login' else logo">
+    </app-side-bar>
 
-    <div class="grid-item router" style="max-width: 600px;">
-       
-
-      <router-outlet></router-outlet> <!-- Main content area -->
-        
-      
-    </div>
-      
-    <div class="grid-item">
-      
-      <div class="cus-margin">
-        <app-trends [trends]="trends"   [userId]="userId"></app-trends>
-      </div>
-      
-      
-
-        <app-suggested-to-follow  [suggestedUsers]="users" [followerId]="userId"/>
-
-      
-    </div>
-
+    <ng-template #logo>
+      <img class="auth-logo" src="assets/X_logo.jpg">
+    </ng-template>
   </div>
-  
+
+  <div class="grid-item router" style="max-width: 600px;">
+    <router-outlet></router-outlet> <!-- Main content area -->
+  </div>
+    
+  <div class="grid-item" *ngIf="routePart.toLowerCase() !== 'signup' && routePart.toLowerCase() !== 'login'">
+    <div class="cus-margin">
+      <app-trends  [userId]="userId"></app-trends>
+    </div>
+    <app-suggested-to-follow  [followerId]="userId"></app-suggested-to-follow>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { CreatedTweet } from "../Models/Tweet.model";
@@ -10,10 +10,13 @@ import { RequestParameters } from "../Models/RequestParameters.model";
 export class TimelineService
 {
     private TimelinesUrl='https://localhost:7246/api/Timelines';
-   
+    public headers: HttpHeaders;
     constructor(private http:HttpClient)
     {
-                 
+        this.headers = new HttpHeaders({
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      'Content-Type': 'application/json'
+          });      
     }
 
 
@@ -21,29 +24,30 @@ export class TimelineService
     {
 
          return this.http.get<CreatedTweet[]>
-         (`${this.TimelinesUrl}/followed/${userId}`);
+         (`${this.TimelinesUrl}/followed/${userId}`,{headers:this.headers});
     }
     
     getRandomTimeline(userId:number):Observable<CreatedTweet[]>{
     return this.http.get<CreatedTweet[]>
     
-    (`${this.TimelinesUrl}/random/${userId}`);
+    (`${this.TimelinesUrl}/random/${userId}`,{headers:this.headers});
   }
 
   getUserLikedTweets(userId: number): Observable< number[]> {
 
     console.log('hello from timeline service');
-    return this.http.get<number[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`);
+    return this.http.get<number[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`,{headers:this.headers});
 }
 
 getUserRetweets(userId: number): Observable< number[]> {
 
     console.log('hello from timeline service');
-    return this.http.get<number[]>(`${this.TimelinesUrl}/retweets/${userId}`);
+    return this.http.get<number[]>(`${this.TimelinesUrl}/retweets/${userId}`,{headers:this.headers});
 }
 getProfile(userId: number, requestParameters: RequestParameters): Observable<{ tweets: CreatedTweet[], totalCount: number }> {
   return this.http.get<CreatedTweet[]>
   (`${this.TimelinesUrl}/profile/${userId}?PageNumber=${requestParameters.PageNumber}&PageSize=${requestParameters.PageSize} `, {
+    headers: this.headers,
       observe: 'response'
   }).pipe(
       map((response: HttpResponse<CreatedTweet[]>) => {

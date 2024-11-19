@@ -15,3 +15,20 @@ export interface CreatedUser{
     createdAt:Date
    
 }
+
+
+export interface UserForRegistration{
+    Email:string,
+    Password:string,
+    UserName:string
+}
+
+export interface UserForLogIn{
+    Email:string,
+    Password:string,
+}
+
+export interface Token{
+accessToken:string,
+refreshToken:string
+}

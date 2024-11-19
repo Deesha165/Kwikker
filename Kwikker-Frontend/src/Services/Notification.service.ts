@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -14,10 +14,15 @@ export class NotificationService {
   private hubConnection!: signalR.HubConnection;
   private notificationCount = new BehaviorSubject<number>(0);
   notificationCount$ = this.notificationCount.asObservable();
-
+  public headers: HttpHeaders;
   constructor(private http:HttpClient) {
     this.startConnection();
     this.addNotificationListener();
+
+    this.headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+'Content-Type': 'application/json'
+    });
   }
 
   // Start SignalR connection
@@ -50,7 +55,10 @@ export class NotificationService {
 
 
   getNotifications(receiverId: number): Observable< CreatedNotification[]> {
-    return this.http.get<CreatedNotification[]>(`${this.NotificationsUrl}/user/${receiverId}`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    });
+    return this.http.get<CreatedNotification[]>(`${this.NotificationsUrl}/user/${receiverId}`,{headers});
 }
 
 }

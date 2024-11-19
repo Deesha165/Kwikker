@@ -66,9 +66,10 @@ namespace Service.ServiceModels
             var refreshToken = GenerateRefreshToken();
             _user.RefreshToken = refreshToken;
             if (populateExp)
-                _user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5);
+                _user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(15);
             await _userManager.UpdateAsync(_user);
-            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);//serializing token
             return new TokenDto(accessToken, refreshToken);
         }
         public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
@@ -78,7 +79,7 @@ namespace Service.ServiceModels
            
             
             if (user == null || user.RefreshToken != tokenDto.RefreshToken ||user.RefreshTokenExpiryTime <= DateTime.Now)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Expired Session");
             
             _user = user;
             return await CreateToken(populateExp: false);

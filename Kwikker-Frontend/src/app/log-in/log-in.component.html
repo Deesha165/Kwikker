@@ -1,1 +1,27 @@
-<p>log-in works!</p>
+<div class="signup-container">
+   
+    <!-- Right Side (Signup Form) -->
+    <div class="right-panel">
+      <h2>Join Twitter today</h2>
+
+      <form (ngSubmit)="onSubmit()">
+        <div *ngIf=" this.errors">
+            <ul>
+              <li *ngFor="let errorKey of (this.errors | keyvalue)" style="color: red; font:bold">{{ errorKey.value }}</li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" [(ngModel)]="userForLogIn.Email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" [(ngModel)]="userForLogIn.Password" required />
+        </div>
+        <button type="submit" class="signup-button">Log In</button>
+      </form>
+      <p class="login-link">Not have an account? <a (click)="goToSignUp()">Sign Up</a> </p>
+    </div>
+  </div>
+  

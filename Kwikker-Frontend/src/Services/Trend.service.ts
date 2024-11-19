@@ -1,5 +1,5 @@
 
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { CreatedTrend} from "../Models/Trend.model";
 import { Observable } from "rxjs";
 import { CreatedTweet } from "../Models/Tweet.model";
@@ -10,7 +10,13 @@ import { Injectable } from "@angular/core";
 export class TrendService{
 
     private TrendsUrl='https://localhost:7246/api/Trends';
-constructor( private http:HttpClient){}
+    public headers: HttpHeaders;
+constructor( private http:HttpClient){
+    this.headers = new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  'Content-Type': 'application/json'
+      });   
+}
 
 
 getTrends():Observable<CreatedTrend[]>{
@@ -18,7 +24,7 @@ getTrends():Observable<CreatedTrend[]>{
     return this.http.get<CreatedTrend[]>(`${this.TrendsUrl}/TopTrends`);
 }
 getTweetsByTrend(hashtag:string):Observable<CreatedTweet[]>{
-    return this.http.get<CreatedTweet[]>(`${this.TrendsUrl}/${encodeURIComponent(hashtag)}`);
+    return this.http.get<CreatedTweet[]>(`${this.TrendsUrl}/${encodeURIComponent(hashtag)}`,{headers:this.headers});
 }
 
 }

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { SideBarComponent } from "./side-bar/side-bar.component";
 import { LogInComponent } from "./log-in/log-in.component";
 import { TrendsComponent } from "./trends/trends.component";
@@ -10,48 +10,36 @@ import { CreatedUser } from '../Models/User.model';
 import { FollowService } from '../Services/Follow.service';
 import { TrendService } from '../Services/Trend.service';
 import { CreatedTrend } from '../Models/Trend.model';
-
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule,RouterOutlet, SideBarComponent, LogInComponent, TrendsComponent, SuggestedToFollowComponent, TweetComponent, HomeTimelineComponent],
+  imports: [CommonModule, RouterOutlet, SideBarComponent, LogInComponent, TrendsComponent, SuggestedToFollowComponent, TweetComponent, HomeTimelineComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Kwikker-Frontend';
-  userId=2;
-  users:CreatedUser[]=[];
-  trends:CreatedTrend[]=[];
+  userId = 2;
 
-  constructor (private followService:FollowService,private trendService:TrendService)
-  {
+  routePart: string = '';
 
-  }
+  constructor(   private router: Router) {}
 
-  ngOnInit():void{
+  ngOnInit(): void {
     console.log("test from app");
-    this.getSuggestedFollowers();
-    this.getRecentTrends();
-  }
 
-  getSuggestedFollowers():void
-  {
-    this.followService.getSuggestedUsersToFollow(this.userId).subscribe((data:CreatedUser[])=>{
-      this.users=data;
+    // Listen to router events to capture route changes
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const currentUrl = this.router.url.split('/');  // Split the URL by '/'
+        this.routePart = currentUrl[1] || '';  // Get the first path segment (e.g., "signup")
+        console.log("Current route part:", this.routePart);
+      }
+    });
+
    
-    },(error)=>{
-      console.error('Error fetching suggested users',error);
-    })
   }
 
-  getRecentTrends():void{
-    this.trendService.getTrends().subscribe((data)=>{
-    this.trends=data;
-
-    console.log(this.trends);
-    })
-   }
-    
-  }
+}

@@ -13,7 +13,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace Kwikker_Backend.Controllers
 {
     [Route("api/[controller]")]
-   
+    [Authorize]
     [ApiController]
     public class TweetsController : ControllerBase
     {
