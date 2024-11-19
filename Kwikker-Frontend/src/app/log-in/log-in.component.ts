@@ -19,6 +19,7 @@ export class LogInComponent {
     Email:'',
     Password:''
   }
+  userId:number=0;
   errors: { [key: string]: string } = {};
   constructor(private authService:AuthenticationService, private route:Router){}
 
@@ -26,9 +27,12 @@ onSubmit() {
 this.authService.login(this.userForLogIn).subscribe({
   next:(response)=>{
   this.errors={};
-   console.log(response);
-              this.authService.setSession(response);
-             
+   
+              
+                localStorage.setItem('userId',response.userId.toString());
+                console.log(this.userId);
+              this.authService.setToken(response.token);
+               
                this.route.navigate(['home']);
   },
   error:(error:HttpErrorResponse)=>{

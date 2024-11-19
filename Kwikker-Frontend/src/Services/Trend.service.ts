@@ -21,7 +21,7 @@ constructor( private http:HttpClient){
 
 getTrends():Observable<CreatedTrend[]>{
 
-    return this.http.get<CreatedTrend[]>(`${this.TrendsUrl}/TopTrends`);
+    return this.http.get<CreatedTrend[]>(`${this.TrendsUrl}/TopTrends`,{headers:this.headers});
 }
 getTweetsByTrend(hashtag:string):Observable<CreatedTweet[]>{
     return this.http.get<CreatedTweet[]>(`${this.TrendsUrl}/${encodeURIComponent(hashtag)}`,{headers:this.headers});

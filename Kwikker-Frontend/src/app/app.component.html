@@ -1,7 +1,7 @@
 <div class="grid-container">
   <div class="grid-item">
     <app-side-bar 
-        [userId]="userId" 
+       
         *ngIf="routePart.toLowerCase() !== 'signup' && routePart.toLowerCase() !== 'login' else logo">
     </app-side-bar>
 
@@ -16,8 +16,8 @@
     
   <div class="grid-item" *ngIf="routePart.toLowerCase() !== 'signup' && routePart.toLowerCase() !== 'login'">
     <div class="cus-margin">
-      <app-trends  [userId]="userId"></app-trends>
+      <app-trends ></app-trends>
     </div>
-    <app-suggested-to-follow  [followerId]="userId"></app-suggested-to-follow>
+    <app-suggested-to-follow  ></app-suggested-to-follow>
   </div>
 </div>

@@ -43,7 +43,7 @@ infiniteScroll
 
     <div *ngIf="tweets.size>0; else noTweets">
       <div *ngFor="let tweet of tweets" class="tweet"> 
-          <app-tweet [tweet]="tweet" [userId]="userId"  
+          <app-tweet [tweet]="tweet"  
           (tweetDeleted)="handleDeletion($event)"  
           (updateTweet)="receiveForUpdate($event)"
           />

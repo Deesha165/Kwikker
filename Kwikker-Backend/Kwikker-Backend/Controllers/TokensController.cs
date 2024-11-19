@@ -7,7 +7,7 @@ using Shared.DTOs;
 namespace Kwikker_Backend.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+ 
     [ApiController]
     public class TokensController : ControllerBase
     {

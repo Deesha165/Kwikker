@@ -1,6 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CreatedTweet, TweetForCreation, TweetForUpdate } from '../../Models/Tweet.model';
-import { TweetService } from '../../Services/Tweet.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 @Component({
@@ -13,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class TweetPostComponent {
 
 
-constructor (private tweetService:TweetService){}
+constructor (){}
 
 tweets!:CreatedTweet[];
 

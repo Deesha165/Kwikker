@@ -4,6 +4,7 @@ import { FollowService } from '../../Services/Follow.service';
 import { CommonModule } from '@angular/common';
 import { Element } from '@angular/compiler';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '../../Services/Authentication.service';
 @Component({
   selector: 'app-followees',
   standalone: true,
@@ -18,7 +19,11 @@ export class FolloweesComponent {
 followStates: { [userId: number]: boolean } = {};
 activeButton!:ElementRef<HTMLButtonElement>;
 
-  constructor (private followService:FollowService,private router:Router,private route:ActivatedRoute){}
+  constructor (private followService:FollowService,private router:Router
+    ,private route:ActivatedRoute,private authService:AuthenticationService)
+    {
+      
+    }
   @ViewChild('followersbtn') followersbtn!:ElementRef<HTMLButtonElement>; 
   @ViewChild('followeesbtn') followeesbtn!:ElementRef<HTMLButtonElement>;
 ngAfterViewInit():void{
@@ -36,7 +41,8 @@ ngOnInit():void{
 
 getFollowees():void{
   
-this.followService.getFollowees(this.followerId).subscribe((data:CreatedUser[])=>{
+this.authService.handleUnauthorized(()=>this.followService.getFollowees(this.followerId))
+.subscribe((data:CreatedUser[])=>{
     this.followees=data;
   
   },(error)=>{
@@ -52,12 +58,15 @@ checkFollow(followeeId: number): void {
   if(!this.followStates[followeeId])
     {
 
-      this.followService.removeFollow(this.followerId,followeeId).subscribe((response)=>{
+      this.authService.handleUnauthorized(()=>this.followService.removeFollow(this.followerId,followeeId))
+      .subscribe((response)=>{
         console.log(response);
        })
     }
     else{
-      this.followService.createFollow(this.followerId,followeeId).subscribe((response)=>{
+
+     this.authService.handleUnauthorized(()=> this.followService.createFollow(this.followerId,followeeId))
+     .subscribe((response)=>{
         console.log(response);
       });
     }

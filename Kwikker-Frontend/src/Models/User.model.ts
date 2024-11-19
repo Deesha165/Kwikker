@@ -29,6 +29,11 @@ export interface UserForLogIn{
 }
 
 export interface Token{
-accessToken:string,
-refreshToken:string
+accessToken:string|null,
+refreshToken:string|null
+}
+
+export interface AuthenticationResponse{
+    token:Token,
+    userId:number
 }

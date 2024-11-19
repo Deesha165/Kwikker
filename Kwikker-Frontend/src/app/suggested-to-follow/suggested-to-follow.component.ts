@@ -4,6 +4,7 @@ import { CreatedUser } from '../../Models/User.model';
 import { FollowService } from '../../Services/Follow.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthenticationService } from '../../Services/Authentication.service';
 @Component({
   selector: 'app-suggested-to-follow',
   standalone: true,
@@ -14,15 +15,26 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class SuggestedToFollowComponent {
   
   suggestedUsers :CreatedUser[]=[];
- @Input()
+
   followerId:number=0;
   followStates: { [userId: number]: boolean } = {};
  
-constructor (private followService:FollowService,private router:Router){}
+constructor (private followService:FollowService,private router:Router,private authService :AuthenticationService)
+{
+  const storedUserId = localStorage.getItem('userId');
+
+  // Check if 'userId' exists and is a valid number
+  if (storedUserId) {
+    this.followerId = parseInt(storedUserId, 10); // parseInt with base 10
+    console.log('followerId from suggested to follow',this.followerId);
+  }
+}
 
 
 getSuggestedFollowers(): void {
-  this.followService.getSuggestedUsersToFollow(this.followerId).subscribe(
+
+  this.authService.handleUnauthorized(()=>this.followService.getSuggestedUsersToFollow(this.followerId))
+  .subscribe(
     (data: CreatedUser[]) => {
       this.suggestedUsers = data;
       console.log('process done successfuly');
@@ -37,13 +49,14 @@ checkFollow(followeeId: number): void {
 
   if(this.followStates[followeeId])
     {
-
-      this.followService.removeFollow(this.followerId,followeeId).subscribe((response)=>{
+ this.authService.handleUnauthorized(()=>this.followService.removeFollow(this.followerId,followeeId))
+      .subscribe((response)=>{
         console.log(response);
        })
     }
     else{
-      this.followService.createFollow(this.followerId,followeeId).subscribe((response)=>{
+      this.authService.handleUnauthorized(()=> this.followService.createFollow(this.followerId,followeeId))
+     .subscribe((response)=>{
         console.log(response);
       });
     }

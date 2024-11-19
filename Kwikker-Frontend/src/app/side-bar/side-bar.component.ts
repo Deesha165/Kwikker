@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../Services/Notification.service';
+import { AuthenticationService } from '../../Services/Authentication.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -13,11 +14,19 @@ import { NotificationService } from '../../Services/Notification.service';
 export class SideBarComponent {
 
   
-@Input()
+
 userId:number=0;
 
 notificationCount!: number;
-constructor(private router:Router,private notificationService: NotificationService){}
+constructor(private router:Router,private notificationService: NotificationService,private authService:AuthenticationService){
+ const storedUserId = localStorage.getItem('userId');
+
+  // Check if 'userId' exists and is a valid number
+  if (storedUserId) {
+    this.userId = parseInt(storedUserId, 10); // parseInt with base 10
+    console.log('from side bar',this.userId);
+  }
+}
 
 ngOnInit():void{
   this.notificationService.notificationCount$.subscribe((data)=>{
@@ -37,5 +46,10 @@ ngOnInit():void{
 goToProfile(userId:number):void{
 
   this.router.navigate(['profile',userId]);
+  }
+
+  logOut(){
+    this.authService.logout();
+    this.router.navigate(['login']);
   }
 }

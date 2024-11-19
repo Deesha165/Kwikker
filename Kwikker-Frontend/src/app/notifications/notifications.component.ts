@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../Services/Notification.service';
 import { CommonModule } from '@angular/common';
 import { CreatedNotification } from '../../Models/Notification.model';
+import { AuthenticationService } from '../../Services/Authentication.service';
 
 @Component({
   selector: 'app-notifications',
@@ -14,7 +15,11 @@ import { CreatedNotification } from '../../Models/Notification.model';
 export class NotificationsComponent {
 notificationEntities!:CreatedNotification[];
   userId=0;
-constructor( private route:ActivatedRoute,private router:Router, private notificationService :NotificationService){}
+constructor( private route:ActivatedRoute,private router:Router, 
+  private notificationService :NotificationService,private authService: AuthenticationService)
+  {
+    
+  }
 
 ngOnInit():void{
   this.route.paramMap.subscribe(paramMap => {
@@ -24,12 +29,12 @@ ngOnInit():void{
 }
 
 getNotifications():void{
-
-this.notificationService.getNotifications(this.userId).subscribe((data)=>{
+console.log('hello from notifications');
+this.authService.handleUnauthorized(()=>this.notificationService.getNotifications(this.userId))
+.subscribe((data)=>{
   this.notificationEntities=data;
 
 })
-
 }
 
 goToProfile(senderId:number)

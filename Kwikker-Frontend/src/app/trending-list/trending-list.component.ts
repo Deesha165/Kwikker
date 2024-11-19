@@ -4,6 +4,7 @@ import { TrendService } from '../../Services/Trend.service';
 import { CreatedTweet } from '../../Models/Tweet.model';
 import { CommonModule } from '@angular/common';
 import { TweetComponent } from "../tweet/tweet.component";
+import { AuthenticationService } from '../../Services/Authentication.service';
 @Component({
   selector: 'app-trending-list',
   standalone: true,
@@ -19,7 +20,9 @@ userId:number=0;
 isLoading:boolean=false;
 relatedTweets:CreatedTweet[]=[];
 
-constructor(private route:ActivatedRoute,private trendService :TrendService){ console.log('trending list reached')}
+constructor(private route:ActivatedRoute,private trendService :TrendService,private authService :AuthenticationService)
+{}
+
   ngOnInit():void{
     this.route.paramMap.subscribe(paramMap => {
       this.hashtag = paramMap.get('hashtag')!; // Extract userId from route
@@ -36,10 +39,16 @@ constructor(private route:ActivatedRoute,private trendService :TrendService){ co
  getRelatedTweets()
  {
   console.log('trending list',this.userId,this.hashtag);
-   this.trendService.getTweetsByTrend(this.hashtag).subscribe((data)=>{
-      this.relatedTweets=data;
-   })
- }
+this.authService.handleUnauthorized(()=>this.trendService.getTweetsByTrend(this.hashtag)).subscribe({
+  next:(response)=>{
+    this.relatedTweets=response;
+  },
+  error:(error)=>{
+    console.log(error);
+  }
+});
+   
 
+ }
 
 }

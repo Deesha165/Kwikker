@@ -7,6 +7,7 @@ import { TweetService } from '../../Services/Tweet.service';
 import { TimelineService } from '../../Services/Timeline.service';
 import { TweetPostComponent } from "../tweet-post/tweet-post.component";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { AuthenticationService } from '../../Services/Authentication.service';
 @Component({
   selector: 'app-home-timeline',
   standalone: true,
@@ -16,10 +17,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 })
 export class HomeTimelineComponent {
  
-  constructor(private tweetService:TweetService,private timelinService:TimelineService)
-  {
-    
-  }
+ 
   tweetToCreate: TweetForCreation = {
     content: '',
     mediaUrl: null
@@ -30,7 +28,7 @@ export class HomeTimelineComponent {
 
   tweetForUpdate!:CreatedTweet;
   activeButton!:ElementRef<HTMLButtonElement>;
-  userId=2;
+  userId:number=0;
   // Check the tweet content whenever the input changes
   checkTweetContent(): void {
     this.isTweetValid = this.tweetToCreate.content.trim().length > 0;
@@ -40,6 +38,19 @@ export class HomeTimelineComponent {
   @ViewChild('Foryou') ForYou!:ElementRef<HTMLButtonElement>; 
  @ViewChild('Following') Following!:ElementRef<HTMLButtonElement>;
 
+
+ constructor(private tweetService:TweetService,private timelinService:TimelineService,private authService: AuthenticationService)
+ {
+       
+  const storedUserId = localStorage.getItem('userId');
+
+  // Check if 'userId' exists and is a valid number
+  if (storedUserId) {
+    this.userId = parseInt(storedUserId, 10); // parseInt with base 10
+  }
+
+ }
+ 
   ngAfterViewInit():void{
     this.activeButton=this.ForYou;
 
@@ -57,7 +68,8 @@ export class HomeTimelineComponent {
     this.changeTapStatus(this.Following); 
   }
     this.toggleLoading();
-    this.timelinService.getFollowersNews(this.userId).subscribe((data:CreatedTweet[])=>{
+    this.authService.handleUnauthorized(()=>this.timelinService.getFollowersNews(this.userId))
+    .subscribe((data:CreatedTweet[])=>{
     
        data.forEach(tweet=>{
       
@@ -80,7 +92,8 @@ export class HomeTimelineComponent {
  
    this.toggleLoading();
 
-    this.timelinService.getRandomTimeline(this.userId).subscribe((data:CreatedTweet[])=>{
+   this.authService.handleUnauthorized(()=> this.timelinService.getRandomTimeline(this.userId))
+   .subscribe((data:CreatedTweet[])=>{
       
       data.forEach(tweet=>{
         this.tweets.add(tweet);
@@ -96,7 +109,9 @@ export class HomeTimelineComponent {
 
 
   submitTweet(): void {
-    this.tweetService.createTweet(this.userId,this.tweetToCreate).subscribe({
+
+    this.authService.handleUnauthorized(()=>this.tweetService.createTweet(this.userId,this.tweetToCreate))
+    .subscribe({
       next: (response) => {
         console.log('Response from server:', response,response.id);
         // Here you can access and handle the response from the backend

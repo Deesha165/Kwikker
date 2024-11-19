@@ -46,14 +46,18 @@ namespace Service.ServiceModels
             //if result.succeed true then registration is successful
             return result;
         }
-        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
+        public async Task<int> ValidateUser(UserForAuthenticationDto userForAuth)
         {
             _user = await _userManager.FindByEmailAsync(userForAuth.Email!);
             var result = (_user != null && await _userManager.CheckPasswordAsync(_user,
-           userForAuth.Password));
+           userForAuth.Password!));
             if (!result)
+            {
                 _logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Wrong user name or password.");
-             return result;
+                return 0;
+            }
+               
+             return _user!.Id;
         }
 
         public async Task<TokenDto> CreateToken(bool populateExp)
