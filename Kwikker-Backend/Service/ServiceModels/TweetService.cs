@@ -23,14 +23,14 @@ namespace Service.ServiceModels
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        private readonly IDataShaper<TweetDTO> _dataShaper;
+        
         public TweetService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper,IDataShaper<TweetDTO> dataShaper)
+        logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
             _mapper=mapper;
-            _dataShaper = dataShaper;
+       
         }
 
         

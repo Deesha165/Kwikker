@@ -37,13 +37,22 @@
     </ul>
     <hr>
     <div class="dropdown">
-        <a href="#" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="assets/download.jpg" alt="User Name">
-        
-          <strong style="margin-left: 20px">Username</strong>
-          <i class="fas fa-ellipsis-v"></i>
-        </a>
       
+      
+        <i class="fas fa-ellipsis-v" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+
+        <div style="display: flex; cursor: pointer;" (click)="goToProfile(this.userId)">
+          <div>
+            <img [src]="this.user?.ProfilePicture" alt="User Name">
+          </div>
+         <div style="margin-left: 5px">
+          {{this.user?.UserName}}
+          {{this.user?.Email}}
+         </div>
+        
+        </div>
+      
+       
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow cus-background" aria-labelledby="dropdownUser1">
       
           <li><a class="dropdown-item"(click)="goToProfile(userId)">Profile</a></li>

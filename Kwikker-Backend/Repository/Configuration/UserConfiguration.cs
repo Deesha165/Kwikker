@@ -16,7 +16,7 @@ namespace Repository.Configuration
             
            
             builder.Property(u => u.Bio)
-                .HasMaxLength(30);
+                .HasMaxLength(50);
           
         }
     }

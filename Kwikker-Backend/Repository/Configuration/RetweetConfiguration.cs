@@ -17,7 +17,7 @@ namespace Repository.Configuration
 
      
             builder.HasOne(r => r.User)
-                  .WithMany(u => u.Retweets)
+                  .WithMany()
                   .HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(r => r.Tweet)

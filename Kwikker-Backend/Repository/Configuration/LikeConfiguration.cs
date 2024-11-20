@@ -19,7 +19,7 @@ namespace Repository.Configuration
         
 
             builder.HasOne(l => l.User)
-                  .WithMany(u => u.Likes)
+                  .WithMany()
                   .HasForeignKey(l => l.UserId).OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(l => l.Tweet)

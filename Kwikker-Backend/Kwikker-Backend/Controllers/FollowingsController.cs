@@ -8,7 +8,7 @@ using System.Text.Json;
 namespace Kwikker_Backend.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class FollowingsController : ControllerBase
     {
@@ -54,9 +54,9 @@ namespace Kwikker_Backend.Controllers
             return Ok(pagedfollowees.followees);
         }
         [HttpGet("random/{UserId:int}")]
-        public async Task<IActionResult>GetSuggestedToFollow(int UserId)
+        public async Task<IActionResult>GetSuggestedToFollow(int UserId,[FromQuery] UserParameters userParameters)
         {
-            var suggestedUsers = await _service.FollowService.GetSuggestedToFollow(UserId);
+            var suggestedUsers = await _service.FollowService.GetSuggestedToFollow(UserId,userParameters);
 
             return Ok(suggestedUsers);
         }

@@ -39,7 +39,8 @@ namespace Kwikker_Backend
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.ConfigureSqlContext(builder.Configuration);
 
-            builder.Services.AddScoped<IDataShaper<TweetDTO>, DataShaper<TweetDTO>>();
+          
+            builder.Services.AddScoped(typeof(IDataShaper<>), typeof(DataShaper<>));
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

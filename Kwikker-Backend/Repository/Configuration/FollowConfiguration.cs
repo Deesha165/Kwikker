@@ -17,7 +17,7 @@ namespace Repository.Configuration
 
             // Configure Follower -> User relationship
             builder.HasOne(f => f.Follower)
-                   .WithMany(f => f.Followers)  // No need to configure the inverse navigation here
+                   .WithMany()  // No need to configure the inverse navigation here
                    .HasForeignKey(f => f.FollowerID).OnDelete(DeleteBehavior.NoAction);
 
             // Configure Followee -> User relationship

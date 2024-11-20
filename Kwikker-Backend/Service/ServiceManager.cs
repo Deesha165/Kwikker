@@ -35,15 +35,15 @@ namespace Service
         private readonly Lazy<IAuthenticationService> _authenticationService;
         public ServiceManager
           (IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper,
-            IConnectionMultiplexer redisConnection, IDataShaper<TweetDTO> dataShaper,
+            IConnectionMultiplexer redisConnection, IDataShaper<User> dataShaper,
             IHubContext<NotificationHub> hubContext, UserManager<User> userManager,IConfiguration configuration)
         {
             
             _userService = new Lazy<IUserService>(() => new
-            UserService(repositoryManager, logger,mapper));
+            UserService(repositoryManager, logger,mapper,dataShaper,userManager));
 
             _tweetService = new Lazy<ITweetService>(() => new
-            TweetService(repositoryManager, logger,mapper, dataShaper));
+            TweetService(repositoryManager, logger,mapper));
 
             _notificationService = new Lazy<INotificationService>(() => new
                 NotificationService(repositoryManager, logger, mapper));
@@ -55,7 +55,7 @@ namespace Service
             LikeService(repositoryManager, logger,mapper,redisConnection, hubContext, _notificationService.Value));
 
             _followService = new Lazy<IFollowService>(() => new
-          FollowService(repositoryManager, logger,mapper,redisConnection,hubContext,_notificationService.Value,_userService.Value));
+          FollowService(repositoryManager, logger,mapper,redisConnection, dataShaper, hubContext,_notificationService.Value,_userService.Value));
 
             _bookmarkService = new Lazy<IBookmarkService>(() => new
           BookmarkService(repositoryManager, logger, mapper, redisConnection));

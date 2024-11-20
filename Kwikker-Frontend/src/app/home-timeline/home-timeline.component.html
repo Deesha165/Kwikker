@@ -11,7 +11,7 @@ infiniteScroll
 
     <div class="createtweet-container">
         <div class="tweet-header">
-            <img src="assets/download.jpg" alt="Profile" class="profile-img">
+            <img [src]="this.user?.ProfilePicture" alt="Profile" class="profile-img" >
            
             <textarea class="tweet-textarea" placeholder="What's happening?" rows="3"
             [(ngModel)]="tweetToCreate.content"

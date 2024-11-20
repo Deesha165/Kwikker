@@ -17,7 +17,7 @@ namespace Service.Contracts.Contracts
         Task<(IEnumerable<GeneralUserDTO> followers, MetaData metaData)> GetUserFollowers(int followeeID, FollowingParameters followingParameters, bool trackChanges);
         Task<(IEnumerable<GeneralUserDTO> followees, MetaData metaData)> GetUserFollowees(int followerID, FollowingParameters followingParameters, bool trackChanges);
 
-        Task<List<GeneralUserDTO>> GetSuggestedToFollow(int UserId);
+        Task<List<ExpandoObject>> GetSuggestedToFollow(int UserId, UserParameters userParameters);
         Task<IEnumerable<int>> GetRandomUsers(int UserId);
     }
 }

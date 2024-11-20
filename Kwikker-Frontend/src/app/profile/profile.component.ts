@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TweetComponent } from '../tweet/tweet.component';
 import { BookmarkService } from '../../Services/Bookmark.service';
 import { FollowService } from '../../Services/Follow.service';
-import { CreatedUser } from '../../Models/User.model';
+import { CreatedUser, UserForUpdate } from '../../Models/User.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../Services/User.service';
 import { TweetService } from '../../Services/Tweet.service';
@@ -13,11 +13,11 @@ import { TweetPostComponent } from '../tweet-post/tweet-post.component';
 import { RequestParameters } from '../../Models/RequestParameters.model';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AuthenticationService } from '../../Services/Authentication.service';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, TweetComponent, TweetPostComponent, InfiniteScrollModule],
+  imports: [CommonModule, TweetComponent, TweetPostComponent, InfiniteScrollModule,FormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -29,6 +29,13 @@ export class ProfileComponent implements AfterViewInit {
     Fields: ''
   };
   userId: number = 0;
+  userForUpdate: UserForUpdate = {
+    Id: 0,
+    UserName: '',
+    Bio: '',
+    CoverPicture: '',
+    Profilepicture: ''
+  };
   profileTweets = new Set<CreatedTweet>();
   followers: CreatedUser[] = [];
   followees: CreatedUser[] = [];
@@ -90,7 +97,7 @@ export class ProfileComponent implements AfterViewInit {
 
   getUser(): void {
     this.authService
-      .handleUnauthorized(() => this.userService.getUser(this.userId))
+      .handleUnauthorized(() => this.userService.getUserDynamic1(this.userId))
       .subscribe({
         next: (data) => (this.user = data),
         error: (error) => console.error('Error fetching user:', error)
@@ -215,4 +222,40 @@ export class ProfileComponent implements AfterViewInit {
   closePopUp(): void {
     this.showTweetPost = false;
   }
+
+  ///updating user logic
+  onSaveChanges()
+  {
+    console.log(this.user.Id,this.user.UserName,this.user.Bio)
+          this.userForUpdate.Id=this.user.Id;
+          this.userForUpdate.UserName=this.user.UserName;
+          this.userForUpdate.Bio=this.user.Bio;
+          this.userForUpdate.CoverPicture=this.user.CoverPicture;
+          this.userForUpdate.Profilepicture=this.user.ProfilePicture;
+
+         this.userService.updateUser(this.userForUpdate).subscribe();
+  }
+  onProfilePictureChange(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.ProfilePicture = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  onCoverPhotoChange(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.CoverPicture = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+
 }

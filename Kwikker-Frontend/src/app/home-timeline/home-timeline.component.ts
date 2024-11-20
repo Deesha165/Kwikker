@@ -8,6 +8,8 @@ import { TimelineService } from '../../Services/Timeline.service';
 import { TweetPostComponent } from "../tweet-post/tweet-post.component";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AuthenticationService } from '../../Services/Authentication.service';
+import { UserService } from '../../Services/User.service';
+import { CreatedUser } from '../../Models/User.model';
 @Component({
   selector: 'app-home-timeline',
   standalone: true,
@@ -24,6 +26,7 @@ export class HomeTimelineComponent {
   };
    showTweetPost:boolean=false;
   isTweetValid: boolean = false;
+  user!:CreatedUser;
   tweets=new Set<CreatedTweet>();
 
   tweetForUpdate!:CreatedTweet;
@@ -39,7 +42,8 @@ export class HomeTimelineComponent {
  @ViewChild('Following') Following!:ElementRef<HTMLButtonElement>;
 
 
- constructor(private tweetService:TweetService,private timelinService:TimelineService,private authService: AuthenticationService)
+ constructor(private tweetService:TweetService,private timelinService:TimelineService
+  ,private authService: AuthenticationService,private userService:UserService)
  {
        
   const storedUserId = localStorage.getItem('userId');
@@ -56,10 +60,15 @@ export class HomeTimelineComponent {
 
     this.GetRandomTimeline();
     this.changeTapStatus(this.ForYou);
-    console.log(this.activeButton.nativeElement);
+     this.getUser();
   }
 
- 
+ getUser()
+ {
+  this.authService.handleUnauthorized(()=>this.userService.getUserDynamic3(this.userId)).subscribe((data)=>{
+    this.user=data;
+  });
+ }
  
  GetFollowersNews():void{
    
@@ -218,6 +227,7 @@ onScroll= ()=>{
 
 }
 
-  
+
+
   }
 

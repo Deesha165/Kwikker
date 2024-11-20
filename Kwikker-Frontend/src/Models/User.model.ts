@@ -7,15 +7,23 @@ export interface UserForCreation{
 }
 
 export interface CreatedUser{
-    id:number,
-    userName:string,
-    email:String,
-    profilePicture:string |null,
+    Id:number,
+    UserName:string|null,
+    Email:String,
+    ProfilePicture:string |ArrayBuffer|null,
+    CoverPicture:string|ArrayBuffer|null,
     Bio: string | null,
-    createdAt:Date
+    CreatedAt:Date
    
 }
-
+export interface UserForUpdate
+{
+    Id:number,
+    UserName:string|null,
+    Profilepicture:string|ArrayBuffer|null,
+    CoverPicture:string|ArrayBuffer|null,
+    Bio: string | null,
+}
 
 export interface UserForRegistration{
     Email:string,

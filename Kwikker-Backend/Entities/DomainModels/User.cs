@@ -14,6 +14,7 @@ namespace Entities.Models
    
      
         public string? ProfilePicture { get; set; } // Could be a URL or a file path
+        public string? CoverPicture { get; set; }
         public string? Bio { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
@@ -21,13 +22,6 @@ namespace Entities.Models
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
 
-        public ICollection<Tweet> Tweets { get; set; }=new List<Tweet>();   
-        public ICollection<Follow> Followers { get; set; } = new HashSet<Follow>();    
-        public ICollection<Like> Likes { get; set; } = new List<Like>();
-        public ICollection<Retweet> Retweets { get; set; } = new List<Retweet>();
-        public ICollection<Bookmark> Bookmarks { get; set; } = new List<Bookmark>();
-
-        public ICollection<Notification> notifications { get; set; } = new List<Notification>();
 
     }
 }

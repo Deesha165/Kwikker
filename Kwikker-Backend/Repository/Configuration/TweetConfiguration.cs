@@ -22,7 +22,7 @@ namespace Repository.Configuration
             
             builder.Property(t => t.CreatedAt).IsRequired();
 
-            builder.HasOne(x => x.User).WithMany(x => x.Tweets).HasForeignKey(x => x.UserID).OnDelete(DeleteBehavior.Cascade);  
+            builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserID).OnDelete(DeleteBehavior.Cascade);  
             builder.HasIndex(t => t.UserID); // Index on UserId for efficient lookups
         }
     }

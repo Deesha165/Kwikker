@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../Services/Notification.service';
 import { AuthenticationService } from '../../Services/Authentication.service';
+import { CreatedUser } from '../../Models/User.model';
+import { UserService } from '../../Services/User.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -17,8 +19,12 @@ export class SideBarComponent {
 
 userId:number=0;
 
+user!:CreatedUser;
+
 notificationCount!: number;
-constructor(private router:Router,private notificationService: NotificationService,private authService:AuthenticationService){
+constructor(private router:Router,private notificationService: NotificationService
+  ,private authService:AuthenticationService, private userService:UserService)
+  {
  const storedUserId = localStorage.getItem('userId');
 
   // Check if 'userId' exists and is a valid number
@@ -32,6 +38,11 @@ ngOnInit():void{
   this.notificationService.notificationCount$.subscribe((data)=>{
     this.notificationCount=data;
   })
+
+
+}
+ngAfterViewInit():void{
+  this.getUser();
 }
 
  // Reset notification count when viewing notifications
@@ -41,7 +52,13 @@ ngOnInit():void{
   this.router.navigate(['notifications',this.userId]);
 
 }
+getUser()
+{
 
+this.authService.handleUnauthorized(()=>this.userService.getUserDynamic2(this.userId)).subscribe((data)=>{
+  this.user=data;
+});
+}
 
 goToProfile(userId:number):void{
 

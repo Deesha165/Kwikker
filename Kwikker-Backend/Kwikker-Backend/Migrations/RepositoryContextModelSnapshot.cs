@@ -259,10 +259,14 @@ namespace Kwikker_Backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoverPicture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -439,7 +443,7 @@ namespace Kwikker_Backend.Migrations
             modelBuilder.Entity("Entities.DomainModels.Notification", b =>
                 {
                     b.HasOne("Entities.Models.User", "Receiver")
-                        .WithMany("notifications")
+                        .WithMany()
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -483,7 +487,7 @@ namespace Kwikker_Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("Entities.Models.User", "User")
-                        .WithMany("Bookmarks")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -502,7 +506,7 @@ namespace Kwikker_Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("Entities.Models.User", "Follower")
-                        .WithMany("Followers")
+                        .WithMany()
                         .HasForeignKey("FollowerID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -521,7 +525,7 @@ namespace Kwikker_Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("Entities.Models.User", "User")
-                        .WithMany("Likes")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -540,7 +544,7 @@ namespace Kwikker_Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("Entities.Models.User", "User")
-                        .WithMany("Retweets")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -553,7 +557,7 @@ namespace Kwikker_Backend.Migrations
             modelBuilder.Entity("Entities.Models.Tweet", b =>
                 {
                     b.HasOne("Entities.Models.User", "User")
-                        .WithMany("Tweets")
+                        .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -626,21 +630,6 @@ namespace Kwikker_Backend.Migrations
                     b.Navigation("Retweets");
 
                     b.Navigation("TweetTrends");
-                });
-
-            modelBuilder.Entity("Entities.Models.User", b =>
-                {
-                    b.Navigation("Bookmarks");
-
-                    b.Navigation("Followers");
-
-                    b.Navigation("Likes");
-
-                    b.Navigation("Retweets");
-
-                    b.Navigation("Tweets");
-
-                    b.Navigation("notifications");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,39 +1,42 @@
-<div class="profile-container"
-     infiniteScroll
-     [infiniteScrollDistance]="2"
-     [infiniteScrollThrottle]="500"
-     (scrolled)="onScroll()"
-     [scrollWindow]="true"> <!-- Set scrollWindow to true -->
+<div 
+  class="profile-container"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="500"
+  (scrolled)="onScroll()"
+  [scrollWindow]="true"> <!-- Set scrollWindow to true -->
 
   <div style="display: flex; padding: 20px 20px;">
     <a href="home"><i class="fa fa-arrow-left"></i></a>
     <div style="margin-left: 20px;">
-      <span class="fw-bold">{{this.user?.userName}}</span>
+      <span class="fw-bold">{{this.user?.UserName}}</span>
       <p>{{ this.count }} posts</p>
     </div>
   </div>
 
   <!-- Cover Photo -->
   <div class="cover-photo">
-    <img src="assets/download.jpg" alt="Cover Photo">
+    <img [src]="user.CoverPicture" alt="Cover Photo">
   </div>
 
   <!-- Profile Info Section -->
   <div class="profile-info">
     <div class="profile-picture">
-      <img src="assets/download.jpg" alt="Profile Picture">
+      <img [src]="user.ProfilePicture" alt="Profile Picture">
     </div>
-    <button class="btn btn-primary ms-auto fw-bold edit-profile">Edit Profile</button>
+    <button class="btn btn-primary ms-auto fw-bold edit-profile" data-bs-toggle="modal" data-bs-target="#formModal">
+      Edit Profile
+    </button>
     <div class="profile-details">
-      <h2>{{this.user?.userName}}</h2>
-      <p>{{this.user?.email}}</p>
+      <h2>{{this.user?.UserName}}</h2>
+      <p>{{this.user?.Email}}</p>
       <p class="fw-bold" style="color: aliceblue;">{{this.user?.Bio}}</p>
-      <p><i class="fa fa-calendar"></i> Joined At {{this.user?.createdAt | date: 'yyyy/MM/dd'}}</p>
+      <p><i class="fa fa-calendar"></i> Joined At {{this.user?.CreatedAt | date: 'yyyy/MM/dd'}}</p>
       <div style="display: flex;">
-        <a (click)="goToFollowees(user.id)">
+        <a (click)="goToFollowees(user.Id)">
           <p><span style="color: white;">{{ followees?.length || 0 }}</span> followings</p>
         </a>
-        <a (click)="goToFollowers(user.id)" style="margin-left: 10px;">
+        <a (click)="goToFollowers(user.Id)" style="margin-left: 10px;">
           <p><span style="color: white;">{{ followers?.length || 0 }}</span> followers</p>
         </a>
       </div>
@@ -80,3 +83,90 @@
     <p style="text-align: center;">No tweets found</p>
   </ng-template>
 </div>
+
+<!-- Bootstrap Modal -->
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="    background-color: black;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModalLabel">Edit Profile</h5>
+        
+      
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="    background-color: white;"></button>
+      </div>
+      <div class="modal-body">
+
+       
+        <form>
+          <!-- Username Field -->
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="username" 
+              name="username" 
+              [(ngModel)]="user.UserName" 
+              required>
+          </div>
+          
+          <!-- Bio Field -->
+          <div class="mb-3">
+            <label for="bio" class="form-label">Bio</label>
+            
+            <textarea 
+              class="form-control" 
+              id="bio" 
+              name="bio" 
+              rows="3" 
+              [(ngModel)]="user.Bio" 
+              required>
+            </textarea>
+          </div>
+
+          <!-- Profile Picture Upload -->
+          <div class="mb-3">
+            <label for="profilePicture" class="form-label">Profile Picture</label>
+            <input 
+              type="file" 
+              class="form-control" 
+              id="profilePicture" 
+              (change)="onProfilePictureChange($event)">
+            <div class="mt-2">
+              <img 
+                *ngIf="user.ProfilePicture" 
+                [src]="user.ProfilePicture " 
+                alt="Profile Picture Preview" 
+                style="width: 100px; height: 100px; border-radius: 50%;">
+            </div>
+          </div>
+
+          <!-- Cover Photo Upload -->
+          <div class="mb-3">
+            <label for="coverPhoto" class="form-label">Cover Photo</label>
+            <input 
+              type="file" 
+              class="form-control" 
+              id="coverPhoto" 
+              (change)="onCoverPhotoChange($event)">
+            <div class="mt-2">
+              <img 
+                *ngIf="user.CoverPicture" 
+                [src]="user.CoverPicture" 
+                alt="Cover Photo Preview" 
+                style="width: 100%; height: auto;">
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <button type="submit" class="btn btn-success w-100" (click)="onSaveChanges()">Save Changes</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

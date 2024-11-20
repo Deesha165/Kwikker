@@ -18,7 +18,7 @@ namespace Repository
 
             base.OnModelCreating(modelBuilder);
 
-           
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new LikeConfiguration());
             modelBuilder.ApplyConfiguration(new TweetConfiguration());
             modelBuilder.ApplyConfiguration(new RetweetConfiguration());
@@ -29,6 +29,7 @@ namespace Repository
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
 
         }
+        public DbSet<User> Users { get; set; }
         public DbSet<Follow>Follows { get; set; }
         public DbSet<Tweet> Tweets { get; set; }    
         public DbSet<Like> Likes { get; set; }

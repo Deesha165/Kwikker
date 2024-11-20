@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { CreatedTweet, TweetForCreation } from "../Models/Tweet.model";
 import { Observable } from "rxjs";
-import { CreatedUser } from "../Models/User.model";
+import { CreatedUser, UserForUpdate } from "../Models/User.model";
 
 @Injectable({
   providedIn: 'root' // Add this to make the service a singleton across the app
@@ -19,10 +19,19 @@ export class UserService{
       });            
     }
 
-    getUser(userId: number): Observable<CreatedUser> {
-        return this.http.get<CreatedUser>(`${this.Url}/${userId}`,{headers:this.headers});
+    getUserDynamic1(userId: number): Observable<any> {
+        return this.http.get<any>(`${this.Url}/${userId}?fields=Id,Email,UserName,Bio,ProfilePicture,CoverPicture,CreatedAt`,{headers:this.headers});
+      }
+      getUserDynamic2(userId:number):Observable<any>{
+        return this.http.get<any>(`${this.Url}/${userId}?fields=Id,UserName,Email,ProfilePicture`,{headers:this.headers});
+      }
+      getUserDynamic3(userId:number):Observable<any>{
+        return this.http.get<any>(`${this.Url}/${userId}?fields=Id,ProfilePicture`,{headers:this.headers});
       }
 
-   
 
+   updateUser(userForUpdate: UserForUpdate):Observable<UserForUpdate>{
+               return this.http.put<UserForUpdate>(`${this.Url}`,userForUpdate,{headers:this.headers});
+   }
+   
 }

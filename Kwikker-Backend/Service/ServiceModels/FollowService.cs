@@ -16,11 +16,12 @@ namespace Service.ServiceModels
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly IDatabase _redisCache;
+        private readonly IDataShaper<User>_dataShaper;
         private readonly INotificationService _notification;
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IUserService _userService;
         public FollowService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper, IConnectionMultiplexer redisConnection, IHubContext<NotificationHub> hubContext, INotificationService notification, IUserService userService)
+        logger, IMapper mapper, IConnectionMultiplexer redisConnection,IDataShaper<User>dataShaper, IHubContext<NotificationHub> hubContext, INotificationService notification, IUserService userService)
         {
             _repository = repository;
             _logger = logger;
@@ -29,6 +30,7 @@ namespace Service.ServiceModels
             _userService = userService;
             _redisCache = redisConnection.GetDatabase();
             _hubContext = hubContext;
+            _dataShaper = dataShaper;
         }
 
         public async Task CreateFollow(int followerId, int followeeId, bool trackChanges)
@@ -91,18 +93,18 @@ namespace Service.ServiceModels
             return (followers:followersDTOs,metaData:followersWithMetaData.MetaData);
         }
         
-        public async Task<List<GeneralUserDTO>>GetSuggestedToFollow(int UserId)
+        public async Task<List<ExpandoObject>>GetSuggestedToFollow(int UserId,UserParameters userParameters)
         {
             IEnumerable<int> availableUserIds = new List<int>();
-            List<GeneralUserDTO> availableUsers = new List<GeneralUserDTO>();
+            List<ExpandoObject> availableUsers = new List<ExpandoObject>();
             
             availableUserIds = await GetRandomUsers(UserId);
 
             foreach(var userid in availableUserIds)
             {
-                var user =await _userService.GetUser(userid,trackChanges:false);
-                var GeneralUser = _mapper.Map<GeneralUserDTO>(user);
-                availableUsers.Add(GeneralUser);
+                var user =await _userService.GetUser(userid,trackChanges:false,userParameters);
+             
+                availableUsers.Add(user);
             }
             return availableUsers;
         }

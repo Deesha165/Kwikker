@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Entities.DomainModels;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Shared.DTOs;
+using System.Dynamic;
 
 namespace Kwikker_Backend
 {
@@ -13,9 +15,13 @@ namespace Kwikker_Backend
             CreateMap<UserForRegistrationDto, User>();
 
 
+            
 
             CreateMap<User, GeneralUserDTO>();
-            CreateMap<User, UserDTO>();
+
+            CreateMap<UserForUpdateDTO, User>()
+      .ForMember(dest => dest.Id, opt => opt.Ignore());
+
             CreateMap<TweetForCreationDTO, Tweet>();
 
             // Mapping from Tweet to TweetDTO
@@ -26,7 +32,7 @@ namespace Kwikker_Backend
             CreateMap<TweetForUpdateDTO, Tweet>();
             CreateMap<Trend, TrendDTO>();
             CreateMap<Notification, NotificationDTO>();
-            CreateMap<UserDTO, GeneralUserDTO>();
+        
         }
     }
 }
