@@ -41,6 +41,7 @@ namespace Service.ServiceModels
             
             if (user is null) throw new NotFoundException(UserId,"User");
             var tweetEntity = _mapper.Map<Tweet>(tweet);
+            
 
            
 
@@ -51,7 +52,12 @@ namespace Service.ServiceModels
             await AddNewTrends(tweet.content,tweetEntity.ID);
 
 
-            var tweetToReturn = _mapper.Map<TweetDTO>(tweetEntity);
+            var tweetToReturn = 
+                new TweetDTO(tweetEntity.ID,tweetEntity.Content!,UserId,tweetEntity.CreatedAt,
+                user.UserName!,0,0,0,user.ProfilePicture!,tweetEntity.MediaURL!);
+
+
+
             return tweetToReturn;
         }
 
@@ -88,6 +94,7 @@ namespace Service.ServiceModels
 
             // 2. Map the changes from the DTO onto the existing tracked tweet entity
             _mapper.Map(tweetForUpdateDTO, tweet);
+            tweet.UpdatedAt = DateTime.Now;
 
             // 3. Save changes
             await _repository.SaveAsync();

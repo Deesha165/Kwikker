@@ -49,6 +49,8 @@ namespace Service.ServiceModels
         public async Task<int> GetUserCount()
         =>await _repository.UserRepository.GetUsersCount();
 
+        
+
         public async Task<UserForUpdateDTO> UpdateUser(UserForUpdateDTO userForUpdateDTO)
         {
             var user = await _userManager.FindByIdAsync(userForUpdateDTO.Id.ToString());
@@ -60,7 +62,7 @@ namespace Service.ServiceModels
             user.UserName = userForUpdateDTO.UserName;
             user.ProfilePicture = userForUpdateDTO.ProfilePicture;
             user.CoverPicture = userForUpdateDTO.CoverPicture;
-
+            user.UpdatedAt = DateTime.Now;
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {

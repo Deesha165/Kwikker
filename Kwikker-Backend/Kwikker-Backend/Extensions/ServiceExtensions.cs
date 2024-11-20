@@ -65,18 +65,20 @@ services.AddScoped<IServiceManager, ServiceManager>();
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentity<User, ApplicationRole>(o =>
+            var builder = services.AddIdentity<User, ApplicationRole>(options =>
             {
-                o.Password.RequireDigit = true;
-                o.Password.RequireLowercase = false;
-                o.Password.RequireUppercase = false;
-                o.Password.RequireNonAlphanumeric = false;
-                o.Password.RequiredLength = 10;
-                o.User.RequireUniqueEmail = true;
+                // Enforce strong password rules
+                options.Password.RequireDigit = true;                   
+                options.Password.RequireLowercase = true;           
+                options.Password.RequireUppercase = true;                
+                options.Password.RequireNonAlphanumeric = true;          
+                options.Password.RequiredLength = 10;                    
+
             })
             .AddEntityFrameworkStores<RepositoryContext>()
             .AddDefaultTokenProviders();
         }
+
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration
 configuration)
         {

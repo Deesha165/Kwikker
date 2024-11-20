@@ -1,20 +1,24 @@
 <div class="grid-container">
   <div class="grid-item">
-    <app-side-bar 
-       
-        *ngIf="routePart.toLowerCase() !== 'signup' && routePart.toLowerCase() !== 'login' else logo">
-    </app-side-bar>
+    <div  *ngIf="isAuthenticated() else logo">
 
+
+      <app-side-bar >
+      </app-side-bar>
+      
+    </div>
+    
     <ng-template #logo>
       <img class="auth-logo" src="assets/X_logo.jpg">
     </ng-template>
+   
   </div>
 
   <div class="grid-item router" style="max-width: 600px;">
     <router-outlet></router-outlet> <!-- Main content area -->
   </div>
     
-  <div class="grid-item" *ngIf="routePart.toLowerCase() !== 'signup' && routePart.toLowerCase() !== 'login'">
+  <div class="grid-item" *ngIf="isAuthenticated()">
     <div class="cus-margin">
       <app-trends ></app-trends>
     </div>

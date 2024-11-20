@@ -23,7 +23,7 @@ namespace Repository.Configuration
                   .HasForeignKey(b => b.UserId).OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(b => b.Tweet)
-                  .WithMany(t => t.Bookmarks)
+                  .WithMany()
                   .HasForeignKey(b => b.TweetId).OnDelete(DeleteBehavior.NoAction); 
 
 

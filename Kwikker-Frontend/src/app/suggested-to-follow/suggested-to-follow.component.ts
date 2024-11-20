@@ -29,11 +29,14 @@ constructor (private followService:FollowService,private router:Router,private a
     console.log('followerId from suggested to follow',this.followerId);
   }
 }
+ngOnInit():void{
+this.getSuggestedFollowers();
+}
 
 
 getSuggestedFollowers(): void {
 
-  this.authService.handleUnauthorized(()=>this.followService.getSuggestedUsersToFollow(this.followerId))
+  this.authService.handleUnauthorized(()=>this.followService.getSuggestedUsersToFollowDynamic(this.followerId))
   .subscribe(
     (data: CreatedUser[]) => {
       this.suggestedUsers = data;

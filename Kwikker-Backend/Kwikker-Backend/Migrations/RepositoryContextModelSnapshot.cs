@@ -237,6 +237,9 @@ namespace Kwikker_Backend.Migrations
                     b.Property<int>("RetweetsNumber")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
@@ -462,13 +465,13 @@ namespace Kwikker_Backend.Migrations
             modelBuilder.Entity("Entities.DomainModels.TweetTrend", b =>
                 {
                     b.HasOne("Entities.DomainModels.Trend", "Trend")
-                        .WithMany("TweetTrends")
+                        .WithMany()
                         .HasForeignKey("TrendId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.Models.Tweet", "Tweet")
-                        .WithMany("TweetTrends")
+                        .WithMany()
                         .HasForeignKey("TweetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -481,7 +484,7 @@ namespace Kwikker_Backend.Migrations
             modelBuilder.Entity("Entities.Models.Bookmark", b =>
                 {
                     b.HasOne("Entities.Models.Tweet", "Tweet")
-                        .WithMany("Bookmarks")
+                        .WithMany()
                         .HasForeignKey("TweetId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -519,7 +522,7 @@ namespace Kwikker_Backend.Migrations
             modelBuilder.Entity("Entities.Models.Like", b =>
                 {
                     b.HasOne("Entities.Models.Tweet", "Tweet")
-                        .WithMany("Likes")
+                        .WithMany()
                         .HasForeignKey("TweetId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -538,7 +541,7 @@ namespace Kwikker_Backend.Migrations
             modelBuilder.Entity("Entities.Models.Retweet", b =>
                 {
                     b.HasOne("Entities.Models.Tweet", "Tweet")
-                        .WithMany("Retweets")
+                        .WithMany()
                         .HasForeignKey("TweetId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -614,22 +617,6 @@ namespace Kwikker_Backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.DomainModels.Trend", b =>
-                {
-                    b.Navigation("TweetTrends");
-                });
-
-            modelBuilder.Entity("Entities.Models.Tweet", b =>
-                {
-                    b.Navigation("Bookmarks");
-
-                    b.Navigation("Likes");
-
-                    b.Navigation("Retweets");
-
-                    b.Navigation("TweetTrends");
                 });
 #pragma warning restore 612, 618
         }

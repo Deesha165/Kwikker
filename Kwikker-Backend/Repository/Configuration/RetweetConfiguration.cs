@@ -21,7 +21,7 @@ namespace Repository.Configuration
                   .HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(r => r.Tweet)
-                  .WithMany(t => t.Retweets)
+                  .WithMany()
                   .HasForeignKey(r => r.TweetId).OnDelete(DeleteBehavior.NoAction);
 
             // Index on UserId and TweetId for optimized queries

@@ -8,6 +8,9 @@ using Entities.Models;
 using System.Dynamic;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 namespace Service.ServiceModels
 {
     internal sealed class FollowService : IFollowService
@@ -20,14 +23,17 @@ namespace Service.ServiceModels
         private readonly INotificationService _notification;
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IUserService _userService;
+        private readonly UserManager<User> _userManager;
         public FollowService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper, IConnectionMultiplexer redisConnection,IDataShaper<User>dataShaper, IHubContext<NotificationHub> hubContext, INotificationService notification, IUserService userService)
+        logger, IMapper mapper, IConnectionMultiplexer redisConnection,IDataShaper<User>dataShaper, 
+            IHubContext<NotificationHub> hubContext,UserManager<User>userManager, INotificationService notification, IUserService userService)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _notification = notification;
             _userService = userService;
+            _userManager=userManager;
             _redisCache = redisConnection.GetDatabase();
             _hubContext = hubContext;
             _dataShaper = dataShaper;
@@ -53,7 +59,8 @@ namespace Service.ServiceModels
             string notificationMessage = $"{follower.UserName} has followed you";
             
             await _notification.CreateNotification(followerId, "Follow", followee.Id);
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
+            if (followerId != followee.Id)
+                await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
             await _repository.SaveAsync();
         }
 
@@ -114,6 +121,7 @@ namespace Service.ServiceModels
             var userFollowees = GetUserFollowees(UserId, followingParameters, trackChanges: false).Result.followees.Select(x=>x.id).ToHashSet();
             int userCounts = await _userService.GetUserCount();
 
+            User firstUser =await _userManager.Users.FirstOrDefaultAsync();
             // List to store the selected available numbers
             List<int> availableUsers = new List<int>();
 
@@ -124,7 +132,8 @@ namespace Service.ServiceModels
             while (maxWanted>0 && availableUsers.Count() < maxWanted)
             {
                 // Generate a random number in the range
-                int randomNumber = random.Next(1, userCounts + 1); // Include rangeEnd
+                
+                int randomNumber = random.Next(firstUser.Id,firstUser.Id+userCounts + 1); // Include rangeEnd
 
                 // Check if the number is not in the exclusion list
                 if (randomNumber != UserId && !userFollowees.Contains(randomNumber) && !availableUsers.Contains(randomNumber))

@@ -43,7 +43,8 @@
 
         <div style="display: flex; cursor: pointer;" (click)="goToProfile(this.userId)">
           <div>
-            <img [src]="this.user?.ProfilePicture" alt="User Name">
+            <img  [src]="user?.ProfilePicture ? user.ProfilePicture : 'assets/default.avif'" alt="Profile" class="profile-img">
+           
           </div>
          <div style="margin-left: 5px">
           {{this.user?.UserName}}

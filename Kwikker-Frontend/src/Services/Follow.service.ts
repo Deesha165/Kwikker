@@ -17,8 +17,8 @@ export class FollowService{
       'Content-Type': 'application/json'
           });
     }
- getSuggestedUsersToFollow(userId:number): Observable<CreatedUser[]>{
-        return this.http.get<CreatedUser[]>(`${this.FollowingsUrl}/random/${userId}`,{headers:this.headers});
+ getSuggestedUsersToFollowDynamic(userId:number): Observable<CreatedUser[]>{
+        return this.http.get<CreatedUser[]>(`${this.FollowingsUrl}/random/${userId}?fields=Id,ProfilePicture,Email,UserName`,{headers:this.headers});
     }
 
     getFollowers(userId:number):Observable<CreatedUser[]>{

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.ExceptionModels;
+using Entities.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.Storage;
 using Service.Contracts.Contracts;
@@ -52,7 +53,9 @@ namespace Service.ServiceModels
             //notify user
             string notificationMessage = $"{user.UserName} has retweeted your tweet";
             await _notification.CreateNotification(userId, "Retweet", tweet.UserID);
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
+
+            if (userId != tweet.UserID)
+                await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
 
 
             await _repository.SaveAsync();

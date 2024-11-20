@@ -11,6 +11,7 @@ import { FollowService } from '../Services/Follow.service';
 import { TrendService } from '../Services/Trend.service';
 import { CreatedTrend } from '../Models/Trend.model';
 import { CommonModule } from '@angular/common';
+import { AuthenticationService } from '../Services/Authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,8 @@ export class AppComponent implements OnInit {
 
   routePart: string = '';
 
-  constructor(   private router: Router) {}
+  constructor(   private router: Router,private authService :AuthenticationService) 
+  {}
 
   ngOnInit(): void {
     console.log("test from app");
@@ -40,6 +42,11 @@ export class AppComponent implements OnInit {
     });
 
    
+  }
+
+  isAuthenticated():boolean
+  {
+    return this.authService.isAuthenticated();
   }
 
 }

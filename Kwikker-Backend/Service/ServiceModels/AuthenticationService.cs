@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.ExceptionModels;
 using Entities.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +42,7 @@ namespace Service.ServiceModels
         public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
         {
             var user = _mapper.Map<User>(userForRegistration);
+            user.CreatedAt = DateTime.Now;
             var result = await _userManager.CreateAsync(user,userForRegistration.Password!);
            
             //if result.succeed true then registration is successful
@@ -80,10 +82,10 @@ namespace Service.ServiceModels
         {
             var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
             var user = await _userManager.FindByNameAsync(principal.Identity.Name);
-           
-            
-            if (user == null || user.RefreshToken != tokenDto.RefreshToken ||user.RefreshTokenExpiryTime <= DateTime.Now)
-                throw new InvalidOperationException("Expired Session");
+
+
+            if (user == null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+                throw new RefreshTokenExpiredException();
             
             _user = user;
             return await CreateToken(populateExp: false);
@@ -144,7 +146,7 @@ namespace Service.ServiceModels
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"))),
-                ValidateLifetime = true,
+                ValidateLifetime = false,
                 ValidIssuer = jwtSettings["validIssuer"],
                 ValidAudience = jwtSettings["validAudience"]
             };

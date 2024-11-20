@@ -20,7 +20,7 @@ namespace Kwikker_Backend.Controllers
        {
             
 
-            var user = await _service.UserService.GetUser(id,trackChanges: false,userParameters);
+           var user = await _service.UserService.GetUser(id,trackChanges: false,userParameters);
                 
             return Ok(user);
             

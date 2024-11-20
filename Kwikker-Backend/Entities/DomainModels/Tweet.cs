@@ -11,9 +11,10 @@ namespace Entities.Models
     {
         public int ID { get; set; } // Primary Key
         public int UserID { get; set; } // Foreign Key
-        public string? Content { get; set; }
+        public string ?Content { get; set; } 
         public string? MediaURL { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }= DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
         //for counting
         public int LikesNumber { get; set; }
         public int RetweetsNumber { get; set; }
@@ -21,10 +22,7 @@ namespace Entities.Models
 
         // Navigation Properties
         public User User { get; set; } = null!; //no tweet without user
-        public ICollection<Retweet> Retweets { get; set; }= new List<Retweet>(); 
-        public ICollection<Like> Likes { get; set; } = new List<Like>();
-        public ICollection<Bookmark> Bookmarks { get; set; }=new List<Bookmark>();
-        public ICollection<TweetTrend> TweetTrends { get; set; }=new List<TweetTrend>();     
+         
       
 
     }

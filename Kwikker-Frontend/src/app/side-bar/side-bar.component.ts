@@ -38,12 +38,10 @@ ngOnInit():void{
   this.notificationService.notificationCount$.subscribe((data)=>{
     this.notificationCount=data;
   })
-
-
-}
-ngAfterViewInit():void{
   this.getUser();
+
 }
+
 
  // Reset notification count when viewing notifications
  viewNotifications() {
@@ -67,6 +65,6 @@ goToProfile(userId:number):void{
 
   logOut(){
     this.authService.logout();
-    this.router.navigate(['login']);
+    
   }
 }

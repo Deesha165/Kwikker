@@ -17,9 +17,9 @@ namespace Repository.Configuration
 
             builder.HasIndex(x => new { x.TrendId ,x.TweetId}); 
 
-            builder.HasOne(x => x.Trend).WithMany(x => x.TweetTrends).HasForeignKey(x => x.TrendId);
+            builder.HasOne(x => x.Trend).WithMany().HasForeignKey(x => x.TrendId);
 
-            builder.HasOne(x => x.Tweet).WithMany(x => x.TweetTrends).HasForeignKey(x => x.TweetId);
+            builder.HasOne(x => x.Tweet).WithMany().HasForeignKey(x => x.TweetId);
         }
     }
 }

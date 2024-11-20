@@ -1,7 +1,8 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AuthenticationResponse, Token, UserForLogIn, UserForRegistration } from "../Models/User.model";
 import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from "rxjs";
+import { Router } from "@angular/router";
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class AuthenticationService{
     private TokensUrl = 'https://localhost:7246/api/Tokens';
   
   
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,private route:Router) {
      
     }
 
@@ -66,33 +67,52 @@ setNewAccessToken(oldToken:Token):Observable<Token>{
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userId');
+    this.route.navigate(['login']);
    
   }
 
   // Check if the user is authenticated
-  get isAuthenticated(): boolean {
-    return !!localStorage.getItem('accessToken');
+   isAuthenticated(): boolean {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return false;
+    return true;
   }
 
 
   handleUnauthorized<T>(operation: () => Observable<T>): Observable<T> {
     return operation().pipe(
-      catchError((error) => {
+      catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-
-          console.log('protecte resource unauthorized');
+          console.log('Protected resource unauthorized');
+  
           const token = this.getToken();
           if (token.accessToken) {
             return this.setNewAccessToken(token).pipe(
-              tap((newToken) => this.setToken(newToken)),
-              switchMap(() => operation()) // Retry original operation
+              tap((newToken) => {
+                // Set the new token if the response is valid
+                console.log('New access token received:', newToken);
+                this.setToken(newToken);
+              }),
+              switchMap(() => operation()), // Retry the original operation
+              catchError((refreshError: HttpErrorResponse) => {
+                // Check the error message for refresh token failure
+                if ( refreshError.status===401&& refreshError.error?.Message === 'Refresh token is expired. Please log in again.') {
+                  console.log('Refresh token is expired. Logging out...');
+                  this.logout();
+                } else {
+                  console.error('Error during token refresh:', refreshError);
+                }
+                return throwError(() => refreshError); // Propagate the error
+              })
             );
           }
         }
+  
         return throwError(() => error); // Propagate other errors
       })
     );
   }
+  
 
   
 }

@@ -50,9 +50,11 @@ namespace Service.ServiceModels
             await _notification.CreateNotification(userId, "Liked", tweet.UserID);
 
             // Send real-time notification via SignalR
-          
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
-
+            if (userId != tweet.UserID)
+            {
+                var receiverUserId = tweet.UserID.ToString(); // Convert to string if using string-based user IDs
+                await _hubContext.Clients.All.SendAsync("ReceiveNotification", notificationMessage);
+            }
             await _repository.SaveAsync();
         }
 

@@ -11,7 +11,7 @@ infiniteScroll
 
     <div class="createtweet-container">
         <div class="tweet-header">
-            <img [src]="this.user?.ProfilePicture" alt="Profile" class="profile-img" >
+            <img  [src]="user?.ProfilePicture ? user.ProfilePicture : 'assets/default.avif'" alt="Profile" class="profile-img">
            
             <textarea class="tweet-textarea" placeholder="What's happening?" rows="3"
             [(ngModel)]="tweetToCreate.content"
@@ -21,7 +21,7 @@ infiniteScroll
         </div>
         
         <div *ngIf="tweetToCreate.mediaUrl" >
-            <img [src]="tweetToCreate.mediaUrl" alt="Selected Image" class="uploaded-image" />
+            <img [src]="tweetToCreate?.mediaUrl " alt="Selected Image" class="uploaded-image" />
         </div>
        
       <div class="tweet-footer">

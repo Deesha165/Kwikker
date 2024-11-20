@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BookmarkService } from '../../Services/Bookmark.service';
 import { AuthenticationService } from '../../Services/Authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tweet',
@@ -27,6 +28,7 @@ export class TweetComponent {
   isDropdownOpen = false;
 
   constructor(
+    private route :Router,
     private tweetService: TweetService,
     private bookmarkService: BookmarkService,
     private authService: AuthenticationService
@@ -98,5 +100,9 @@ export class TweetComponent {
         next: () => this.tweetDeleted.emit(this.tweet),
         error: (error) => console.error('Failed to delete tweet:', error)
       });
+  }
+  goToProfile(userId:number)
+  {
+this.route.navigate(['profile',userId]);
   }
 }

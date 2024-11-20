@@ -16,8 +16,8 @@ namespace Entities.Models
         public string? ProfilePicture { get; set; } // Could be a URL or a file path
         public string? CoverPicture { get; set; }
         public string? Bio { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }=DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }

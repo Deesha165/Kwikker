@@ -14,6 +14,6 @@ namespace Entities.DomainModels
         public DateTime LastOccurred { get; set; } // Last time the hashtag was used
         public double DecayScore { get; set; }  // Calculated decay score based on time and ocuurence
 
-        public ICollection<TweetTrend> TweetTrends { get; set; } = new List<TweetTrend>();
+        
     }
 }
