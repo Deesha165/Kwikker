@@ -8,7 +8,6 @@ Kwikker is a dynamic social media application designed to facilitate seamless in
 - **Frameworks**: ASP.NET Core, Angular, Entity Framework Core.
 - **Databases**: SQL Server, Redis (for caching).
 - **Real-time Communication**: SignalR.
-- **Testing**: XUnit.
 - **Tools**: Git, Postman, Hangfire (for background tasks), AutoMapper, LINQ, Dynamic LINQ.
   
 ##  Features
