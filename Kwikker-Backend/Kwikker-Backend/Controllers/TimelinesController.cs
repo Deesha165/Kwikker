@@ -29,7 +29,7 @@ namespace Kwikker_Backend.Controllers
             return Ok(timeline.twts);
         }
 
-        //randomized collection of tweets of followed users => home
+        //collection of tweets of followed users => home
         [HttpGet("followed/{UserId:int}")]
         public async Task<IActionResult> GetHomeTimeline(int UserId)
         {

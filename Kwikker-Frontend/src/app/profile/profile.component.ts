@@ -58,6 +58,7 @@ export class ProfileComponent implements AfterViewInit {
   isLoading: boolean = false;
 
   constructor(
+  
     private timelineService: TimelineService,
     private bookmarksService: BookmarkService,
     private followService: FollowService,
@@ -205,13 +206,14 @@ export class ProfileComponent implements AfterViewInit {
   }
 
   handleDeletion(tweet: CreatedTweet): void {
+    this.authService.handleUnauthorized(()=>this.tweetService.removeTweet(tweet.id)).subscribe();
     this.profileTweets.delete(tweet);
   }
 
   handleUpdate(tweet: CreatedTweet): void {
     this.tweetForUpdate = tweet;
     this.showTweetPost = false;
-    this.tweetService.updateTweet(this.tweetForUpdate).subscribe();
+    this.authService.handleUnauthorized(()=>this.tweetService.updateTweet(this.tweetForUpdate)).subscribe();
   }
 
   receiveForUpdate(tweet: CreatedTweet): void {

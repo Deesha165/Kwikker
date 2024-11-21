@@ -22,7 +22,7 @@ namespace Service.ServiceModels
         private readonly IHubContext<NotificationHub> _hubContext;
 
         private string CacheKey = "Likes";  // Cache key
-        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);  // Cache expiration time
+        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(20);  // Cache expiration time
         public LikeService(IRepositoryManager repository, ILoggerManager
         logger, IMapper mapper, IConnectionMultiplexer redisConnection, IHubContext<NotificationHub> hubContext, INotificationService notification)
         {

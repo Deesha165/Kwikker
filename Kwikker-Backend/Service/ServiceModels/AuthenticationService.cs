@@ -72,7 +72,7 @@ namespace Service.ServiceModels
             var refreshToken = GenerateRefreshToken();
             _user.RefreshToken = refreshToken;
             if (populateExp)
-                _user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(15);
+                _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(3);
             await _userManager.UpdateAsync(_user);
 
             var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);//serializing token

@@ -29,7 +29,7 @@ namespace Service.ServiceModels
         private readonly StackExchange.Redis.IDatabase _redisCache;
 
         private string CacheKey = "Retweets";  // Cache key
-        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);  // Cache expiration time
+        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(20);  // Cache expiration time
         public RetweetService(IRepositoryManager repository, ILoggerManager
         logger, IMapper mapper, IConnectionMultiplexer redisConnection, IHubContext<NotificationHub> hubContext, INotificationService notification)
         {

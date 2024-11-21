@@ -17,6 +17,7 @@ export interface CreatedTweet
     createdAt:Date,
     profilePicture:string |ArrayBuffer|null,
     userName:string,
+    email:string,
     likesNumber:number,
     retweetsNumber:number,
     bookmarksNumber:number

@@ -18,7 +18,7 @@ namespace Service.ServiceModels
         private readonly IDatabase _redisCache;  // Use Redis cache
 
         private const string CacheKey = "TopTrends";  // Cache key
-        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(4);  // Cache expiration time
+        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(40);  // Cache expiration time
 
         public TrendService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IConnectionMultiplexer redisConnection)
         {

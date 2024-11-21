@@ -32,7 +32,8 @@
           
 
         <li>
-            <button class="btn btn-primary">Post</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal3">Post</button>
+           
         </li>
     </ul>
     <hr>
@@ -63,3 +64,66 @@
       </div>
       
 </div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="formModal3" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="    background-color: black;">
+      
+          
+      <div class="modal-body">
+          
+
+             <!--  tweet content -->
+          <textarea
+          class="tweet-textarea"
+          placeholder="What's happening?"
+          rows="3"
+          [(ngModel)]="tweet.content"
+          name="content"
+          (input)="checkTweetContent()">
+        </textarea>
+
+          <!--  tweet picture Upload -->
+          <div class="mb-3">
+            <label for="profilePicture" class="form-label">Profile Picture</label>
+            <input 
+              type="file" 
+              class="form-control" 
+              id="profilePicture" 
+              (change)="onFileSelected($event)">
+            <div class="mt-2">
+              <img 
+                *ngIf="tweet?.mediaUrl" 
+                [src]="tweet?.mediaUrl" 
+                alt="Profile Picture Preview" 
+                style="width: 100px; height: 100px; ">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100" [disabled]="!isTweetValid" (click)="saveTweet()" >Save Changes</button>
+        
+        
+       <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

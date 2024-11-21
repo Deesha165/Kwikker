@@ -1,29 +1,41 @@
-<div  >
-    <div class="createtweet-container">
-      
-      <div class="tweet-header">
-        
+
+    <div style="padding: 50px 50px;
+    background-color: black;">
+    <h1 class="form-label" style="text-align: center;align-items: center;">Update Your tweet</h1>
+      <div >
+        <hr/>
+        <label for="tweet" class="form-label">What is your thought?</label>
         <textarea
           class="tweet-textarea"
           placeholder="What's happening?"
           rows="3"
           [(ngModel)]="currentTweet.content"
-          (input)="checkTweetContent()">
+          (input)="checkTweetContent()" style="    width: 300px;height: 120px;">
         </textarea>
       </div>
       
+      
       <div *ngIf="currentTweet.mediaUrl">
-        <img [src]="currentTweet.mediaUrl" alt="Selected Image" class="uploaded-image" />
+        <div>
+          <label for="tweet" class="form-label">Upload Image</label>
+          <i class="fas fa-download tweet-icon" title="Download Media" (click)="triggerFileInput()"></i>
+        </div>
+       
+        <img [src]="currentTweet.mediaUrl" alt="Selected Image" class="uploaded-image"  style="    width: 300px;height: 120px;"/>
       </div>
   
       <div class="tweet-footer">
         <div class="tweet-icons">
-          <i class="fas fa-download tweet-icon" title="Download Media" (click)="triggerFileInput()"></i>
+          
           <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept="image/*">
         </div>
-        <button class="btn btn-primary" style="border: inherit;" [disabled]="!isTweetValid" (click)="sendTweet()">Tweet</button>
-        <button class="btn btn-secondary" style="margin-left: 10px;" (click)="closePopup()">Cancel</button>
+        <div>
+          <hr/>
+          <button class="btn btn-primary" style="border: inherit;" [disabled]="!isTweetValid" (click)="sendTweet()">Tweet</button>
+          <button class="btn btn-secondary" style="margin-left: 10px;" (click)="closePopup()">Cancel</button>
+        </div>
+        
       </div>
     </div>
-  </div>
+ 
   

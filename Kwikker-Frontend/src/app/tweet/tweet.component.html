@@ -1,20 +1,26 @@
 <div class="tweet-container">
    <div class="tweet-header">
-    <a (click)="goToProfile(this.tweet.userId)">
+    <a (click)="goToProfile(this.tweet.userId)" style="display: flex;">
       <img src="{{tweet?.profilePicture}}" alt="User Name" class="avatar">
-      <strong style="margin-left: 10px">{{tweet?.userName}}</strong>
-    </a>
-    <div class="dropdown" style="position: relative; margin-left: 80%;">
+      <div style="margin-left: 10px">
+        {{tweet?.userName}}
+       <span class="cus-email">{{tweet?.email}}</span> 
+      </div>
       <a href="#"  id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
         <!-- Font Awesome ellipsis icon for options -->
         <i class="fas fa-ellipsis-v" *ngIf="tweet.userId==userId"></i>
       </a>
-      
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow cus-background">
         <li><a class="dropdown-item" (click)="editTweet()">Edit</a></li>
         <li><a class="dropdown-item" (click)="deleteTweet()">Delete</a></li>
         
       </ul>
+    </a>
+
+    <div class="dropdown" style="position: relative; margin-left: 80%;">
+      
+      
+      
     </div>
     
   </div>

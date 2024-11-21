@@ -247,3 +247,7 @@ input {
 .login-link a:hover {
   text-decoration: underline;
 }
+.cus-email{
+  font-size: 12px;    
+  color: #858482;
+}

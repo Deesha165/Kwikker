@@ -16,6 +16,7 @@ namespace Shared.DTOs
     int likesNumber,
     int retweetsNumber,
     int bookmarksNumber,
+    string email,
       string profilePicture = "",
        string mediaUrl = ""
 );

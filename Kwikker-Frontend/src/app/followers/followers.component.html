@@ -6,20 +6,20 @@
 
    <ul class="list-unstyled" style="margin:40px 20px">
      <li *ngFor="let user of followers" class="mb-3" style="display: flex;">
-       <a (click)="goToProfile(user.id)" class="text-decoration-none text-dark d-flex align-items-center">
-         <img [src]="user.profilePicture" alt="{{ user.userName }}" >
+       <a (click)="goToProfile(user.Id)" class="text-decoration-none text-dark d-flex align-items-center">
+         <img [src]="user.ProfilePicture" alt="{{ user.UserName }}" >
          <div>
-           <p class="mb-0 fw-bold">{{ user.userName }}</p>
-           <span class="text-muted">{{ user.email }}</span>
+           <p class="mb-0 fw-bold">{{ user.UserName }}</p>
+           <span class="text-muted">{{ user.Email }}</span>
          </div>
 
        
        </a>
 
        <button 
-       [ngClass]="isFollowed(user.id) ? 'btn-unfollow fw-bold ms-auto' : 'btn-follow fw-bold ms-auto'"
-       (click)="checkFollow(user.id)">
-       <span>{{ isFollowed(user.id) ? 'Unfollow' : 'Follow' }}</span>
+       [ngClass]="isFollowed(user.Id) ? 'btn-unfollow fw-bold ms-auto' : 'btn-follow fw-bold ms-auto'"
+       (click)="checkFollow(user.Id)">
+       <span>{{ isFollowed(user.Id) ? 'Unfollow' : 'Follow' }}</span>
      </button>
      </li>
      

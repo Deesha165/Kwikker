@@ -54,7 +54,7 @@ namespace Service.ServiceModels
 
             var tweetToReturn = 
                 new TweetDTO(tweetEntity.ID,tweetEntity.Content!,UserId,tweetEntity.CreatedAt,
-                user.UserName!,0,0,0,user.ProfilePicture!,tweetEntity.MediaURL!);
+                user.UserName!,0,0,0,user.Email!,user.ProfilePicture!,tweetEntity.MediaURL!);
 
 
 

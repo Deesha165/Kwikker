@@ -133,7 +133,7 @@ namespace Service.ServiceModels
             {
                 // Generate a random number in the range
                 
-                int randomNumber = random.Next(firstUser.Id,firstUser.Id+userCounts + 1); // Include rangeEnd
+                int randomNumber = random.Next(firstUser.Id,firstUser.Id+userCounts ); // Include rangeEnd
 
                 // Check if the number is not in the exclusion list
                 if (randomNumber != UserId && !userFollowees.Contains(randomNumber) && !availableUsers.Contains(randomNumber))

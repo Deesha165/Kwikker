@@ -24,10 +24,18 @@ namespace Kwikker_Backend
 
             CreateMap<TweetForCreationDTO, Tweet>();
 
-            // Mapping from Tweet to TweetDTO
             CreateMap<Tweet, TweetDTO>()
-                .ForCtorParam("profilePicture", opt => opt.MapFrom(src => src.User.ProfilePicture )) // Default to empty string if null
-                .ForCtorParam("userName", opt => opt.MapFrom(src => src.User.UserName)); // Maps User's Username to TweetDTO's userName
+    .ForCtorParam("id", opt => opt.MapFrom(src => src.ID))
+    .ForCtorParam("content", opt => opt.MapFrom(src => src.Content ?? string.Empty))
+    .ForCtorParam("userId", opt => opt.MapFrom(src => src.UserID))
+    .ForCtorParam("createdAt", opt => opt.MapFrom(src => src.CreatedAt))
+    .ForCtorParam("userName", opt => opt.MapFrom(src => src.User.UserName))
+    .ForCtorParam("likesNumber", opt => opt.MapFrom(src => src.LikesNumber))
+    .ForCtorParam("retweetsNumber", opt => opt.MapFrom(src => src.RetweetsNumber))
+    .ForCtorParam("bookmarksNumber", opt => opt.MapFrom(src => src.BookmarksNumber))
+    .ForCtorParam("email", opt => opt.MapFrom(src => src.User.Email))
+    .ForCtorParam("profilePicture", opt => opt.MapFrom(src => src.User.ProfilePicture ?? string.Empty))
+    .ForCtorParam("mediaUrl", opt => opt.MapFrom(src => src.MediaURL ?? string.Empty));
 
             CreateMap<TweetForUpdateDTO, Tweet>();
             CreateMap<Trend, TrendDTO>();

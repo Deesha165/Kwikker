@@ -137,7 +137,8 @@ export class HomeTimelineComponent {
              userName: response.userName,
              likesNumber:response.likesNumber,
              retweetsNumber:response.retweetsNumber,
-             bookmarksNumber:response.bookmarksNumber
+             bookmarksNumber:response.bookmarksNumber,
+             email:response.email
            }    
            this.tweets.add(newTweet);          
             
@@ -196,6 +197,7 @@ export class HomeTimelineComponent {
     }
     handleDeletion(tweet:CreatedTweet)
  {
+  this.authService.handleUnauthorized(()=>this.tweetService.removeTweet(tweet.id)).subscribe();
   this.tweets.delete(tweet);
  }
  receiveForUpdate(tweet:CreatedTweet)
@@ -207,7 +209,8 @@ export class HomeTimelineComponent {
       this.tweetForUpdate=tweet;
       this.showTweetPost=false;
 
-     this.tweetService.updateTweet(this.tweetForUpdate).subscribe();
+
+     this.authService.handleUnauthorized(()=>this.tweetService.updateTweet(this.tweetForUpdate)).subscribe();
 
     }
    closePopUp():void{

@@ -16,7 +16,7 @@ namespace Service.ServiceModels
         private readonly IDatabase _redisCache;
 
         private string CacheKey = "Bookmarks";  // Cache key
-        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);  // Cache expiration time
+        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(20);  // Cache expiration time
         public BookmarkService(IRepositoryManager repository, ILoggerManager
         logger,IMapper mapper,IConnectionMultiplexer redisConnection)
         {

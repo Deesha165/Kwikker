@@ -26,7 +26,7 @@ namespace Kwikker_Backend.Extensions
             {
                 options.AddPolicy("CorsPolicy", builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithExposedHeaders("X-Pagination");
+                    builder.WithOrigins("http://localhost:54185").AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithExposedHeaders("X-Pagination");
             });
             }
             );    
@@ -59,7 +59,7 @@ services.AddScoped<IServiceManager, ServiceManager>();
             recurringJobManager.AddOrUpdate<ITrendService>(
     "UpdateTrendsJob",
     service => service.GetTopTrends(),
-              "*/2 * * * *");
+              "*/20 * * * *");
         }
 
 
