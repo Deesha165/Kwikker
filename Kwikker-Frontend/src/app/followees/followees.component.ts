@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { CreatedUser } from '../../Models/User.model';
+import { CreatedUser, CustomUser } from '../../Models/User.model';
 import { FollowService } from '../../Services/Follow.service';
 import { CommonModule } from '@angular/common';
 import { Element } from '@angular/compiler';
@@ -14,7 +14,7 @@ import { AuthenticationService } from '../../Services/Authentication.service';
 })
 export class FolloweesComponent {
   followerId=0;
-  followees:CreatedUser[]=[];
+  followees:CustomUser[]=[];
 
 followStates: { [userId: number]: boolean } = {};
 activeButton!:ElementRef<HTMLButtonElement>;
@@ -42,9 +42,10 @@ ngOnInit():void{
 getFollowees():void{
   
 this.authService.handleUnauthorized(()=>this.followService.getFollowees(this.followerId))
-.subscribe((data:CreatedUser[])=>{
-    this.followees=data;
+.subscribe((data)=>{
   
+    this.followees=data;
+    console.log('followees',this.followees);
   },(error)=>{
    console.log('error at fetching followees data',(error));
   })

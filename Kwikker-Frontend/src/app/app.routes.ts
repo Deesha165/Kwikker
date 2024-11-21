@@ -18,6 +18,6 @@ export const routes: Routes =
     {path:'trends/:hashtag/:id' , component:TrendingListComponent,canActivate:[authGuard]},
     {path:'signup',component:SignUpComponent},
     {path:'login',component:LogInComponent},
-    { path: '**', redirectTo: 'signup' }
+    { path: '**', redirectTo: 'login' }
 
 ];

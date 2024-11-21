@@ -118,7 +118,7 @@ namespace Service.ServiceModels
         public async Task<IEnumerable<int>>GetRandomUsers(int UserId)
         {
             FollowingParameters followingParameters = new FollowingParameters();
-            var userFollowees = GetUserFollowees(UserId, followingParameters, trackChanges: false).Result.followees.Select(x=>x.id).ToHashSet();
+            var userFollowees = GetUserFollowees(UserId, followingParameters, trackChanges: false).Result.followees.Select(x=>x.Id).ToHashSet();
             int userCounts = await _userService.GetUserCount();
 
             User firstUser =await _userManager.Users.FirstOrDefaultAsync();

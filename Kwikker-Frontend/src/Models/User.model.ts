@@ -16,6 +16,12 @@ export interface CreatedUser{
     CreatedAt:Date
    
 }
+export interface CustomUser{
+    id:number,
+    userName:string|null,
+    email:String,
+    profilePicture:string |ArrayBuffer|null
+}
 export interface UserForUpdate
 {
     Id:number,

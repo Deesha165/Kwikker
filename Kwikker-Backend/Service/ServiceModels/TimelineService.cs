@@ -55,7 +55,7 @@ namespace Service.ServiceModels
                 foreach (var followee in randomFollowees)
                 {
 
-                    var randomTweets = await _tweetService.GetTweetsByUser(followee.id, tweetParameters, trackChanges: false);
+                    var randomTweets = await _tweetService.GetTweetsByUser(followee.Id, tweetParameters, trackChanges: false);
                     homeTimeline.AddRange(randomTweets.tweets);
 
                 }

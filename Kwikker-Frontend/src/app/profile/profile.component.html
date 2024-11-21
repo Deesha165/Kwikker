@@ -26,9 +26,12 @@
       <img  [src]="user?.ProfilePicture ? user.ProfilePicture : 'assets/default.avif'" alt="Profile" class="profile-img">
            
     </div>
-    <button class="btn btn-primary ms-auto fw-bold edit-profile" data-bs-toggle="modal" data-bs-target="#formModal">
-      Edit Profile
-    </button>
+    <div *ngIf="this.userId===this.appUserId">
+      <button  class="btn btn-primary ms-auto fw-bold edit-profile" data-bs-toggle="modal" data-bs-target="#formModal">
+        Edit Profile
+      </button>
+    </div>
+   
     <div class="profile-details">
       <h2>{{this.user?.UserName}}</h2>
       <p>{{this.user?.Email}}</p>
@@ -61,10 +64,7 @@
   <div *ngIf="profileTweets.size > 0; else noTweets">
     <div *ngFor="let tweet of profileTweets">
       <app-tweet 
-        *ngIf="(likedTweets.has(tweet.id) && this.activeButton.nativeElement==this.likes) || 
-        (bookmarkes.has(tweet.id) && this.activeButton.nativeElement==this.bookmarks) || 
-        (allTweets.has(tweet.id) && this.activeButton.nativeElement==this.posts)||
-        (userRetweets.has(tweet.id) && this.activeButton.nativeElement==this.retweets)"
+        *ngIf="checkTweetExistense(tweet.id)"
 
         [tweet]="tweet"
         
@@ -74,6 +74,8 @@
         (tweetDeleted)="handleDeletion($event)"
         (updateTweet)="receiveForUpdate($event)">
       </app-tweet>
+
+      
     </div>
 
     <!-- Loading Indicator -->
@@ -162,7 +164,7 @@
           </div>
 
           <!-- Save Button -->
-          <button type="submit" class="btn btn-success w-100" (click)="onSaveChanges()">Save Changes</button>
+          <button type="submit" class="btn btn-success w-100" data-bs-dismiss="modal" (click)="onSaveChanges()">Save Changes</button>
         </form>
       </div>
       <div class="modal-footer">

@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TweetComponent } from '../tweet/tweet.component';
 import { BookmarkService } from '../../Services/Bookmark.service';
 import { FollowService } from '../../Services/Follow.service';
-import { CreatedUser, UserForUpdate } from '../../Models/User.model';
+import { CreatedUser, CustomUser, UserForUpdate } from '../../Models/User.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../Services/User.service';
 import { TweetService } from '../../Services/Tweet.service';
@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-profile',
   standalone: true,
   imports: [CommonModule, TweetComponent, TweetPostComponent, InfiniteScrollModule,FormsModule],
-  templateUrl: './profile.component.html',
+  templateUrl:'./profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements AfterViewInit {
@@ -28,6 +28,8 @@ export class ProfileComponent implements AfterViewInit {
     OrderBy: '',
     Fields: ''
   };
+
+  appUserId:number=0;
   userId: number = 0;
   userForUpdate: UserForUpdate = {
     Id: 0,
@@ -37,8 +39,8 @@ export class ProfileComponent implements AfterViewInit {
     Profilepicture: ''
   };
   profileTweets = new Set<CreatedTweet>();
-  followers: CreatedUser[] = [];
-  followees: CreatedUser[] = [];
+  followers: CustomUser[] = [];
+  followees: CustomUser[] = [];
   user!: CreatedUser;
   count: number = 0;
   showTweetPost: boolean = false;
@@ -48,10 +50,10 @@ export class ProfileComponent implements AfterViewInit {
   likedTweets = new Set<number>();
   userRetweets = new Set<number>();
 
-  @ViewChild('posts') posts!: ElementRef<HTMLButtonElement>;
-  @ViewChild('likes') likes!: ElementRef<HTMLButtonElement>;
-  @ViewChild('bookmarks') bookmarks!: ElementRef<HTMLButtonElement>;
-  @ViewChild('retweets') retweets!: ElementRef<HTMLButtonElement>;
+  @ViewChild('posts', { static: false }) posts!: ElementRef<HTMLButtonElement>;
+  @ViewChild('likes', { static: false }) likes!: ElementRef<HTMLButtonElement>;
+  @ViewChild('bookmarks', { static: false }) bookmarks!: ElementRef<HTMLButtonElement>;
+  @ViewChild('retweets', { static: false }) retweets!: ElementRef<HTMLButtonElement>;
 
   activeButton!: ElementRef<HTMLButtonElement>;
 
@@ -67,7 +69,17 @@ export class ProfileComponent implements AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthenticationService
-  ) {}
+  ) 
+  {
+    const storedUserId = localStorage.getItem('userId');
+
+    // Check if 'userId' exists and is a valid number
+    if (storedUserId) {
+      this.appUserId = parseInt(storedUserId, 10); // parseInt with base 10
+      console.log('followerId from suggested to follow',this.appUserId);
+    }
+
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
@@ -259,5 +271,12 @@ export class ProfileComponent implements AfterViewInit {
     }
   }
 
+checkTweetExistense(id:number):boolean
+{
+  return (this.likedTweets.has(id) && this.activeButton==this.likes) || 
+        (this.bookmarkes.has(id) && this.activeButton==this.bookmarks) || 
+        (this.allTweets.has(id) && this.activeButton ==this.posts)||
+        (this.userRetweets.has(id) && this.activeButton ==this.retweets)
+}
 
 }

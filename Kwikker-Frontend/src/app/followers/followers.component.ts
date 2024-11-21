@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { CreatedUser } from '../../Models/User.model';
+import { CreatedUser, CustomUser } from '../../Models/User.model';
 import { FollowService } from '../../Services/Follow.service';
 import { CommonModule } from '@angular/common';
 import { CreatedTweet } from '../../Models/Tweet.model';
@@ -14,7 +14,7 @@ import { AuthenticationService } from '../../Services/Authentication.service';
 })
 export class FollowersComponent {
 
-  followers:CreatedUser[]=[];
+  followers:CustomUser[]=[];
 
   followerId=0;
   
@@ -49,9 +49,10 @@ activeButton!:ElementRef<HTMLButtonElement>;
 getFollowers():void{
   
 this.authService.handleUnauthorized(()=>this.followService.getFollowers(this.followerId))
-.subscribe((data:CreatedUser[])=>{
+.subscribe((data)=>{
+   
     this.followers=data;
-  
+    console.log('followers',this.followers);
   },(error)=>{
    console.log('error at fetching followers data',(error));
   })
