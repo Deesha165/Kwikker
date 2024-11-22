@@ -11,7 +11,7 @@ import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = 
 [   {path:'home',component:HomeTimelineComponent,canActivate:[authGuard]} , 
-    {path:'profile/:id',component:ProfileComponent,canActivate:[authGuard]},
+    {path:'profile/:id',component:ProfileComponent,canActivate:[authGuard],runGuardsAndResolvers: 'always' },
     {path:'followers/:id',component:FollowersComponent,canActivate:[authGuard]},
     {path:'followees/:id',component:FolloweesComponent,canActivate:[authGuard]},
     {path:'notifications/:id',component:NotificationsComponent,canActivate:[authGuard]},

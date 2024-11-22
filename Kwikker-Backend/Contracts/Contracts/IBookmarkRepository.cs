@@ -9,7 +9,7 @@ namespace Repository.RepositoryModels
         void DeleteBookmark(Bookmark bookmark);
         Task<Bookmark> GetBookmark(int userId, int tweetId, bool trackChanges);
 
-        Task<List<int>> GetBookmarksByUser(int UserId,bool trackChanges);
+        Task<List<Tweet>> GetBookmarksByUser(int UserId,bool trackChanges);
 
 
     }

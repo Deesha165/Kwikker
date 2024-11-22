@@ -15,6 +15,6 @@ namespace Repository.Contracts.Contracts
         void DeleteRetweet(Retweet retweet);
         Task<Retweet> GetRetweet(int userId, int tweetId, bool trackChanges);
 
-        Task<List<int>> GetRetweetsByUser(int UserId, bool trackChanges);
+        Task<List<Tweet>> GetRetweetsByUser(int UserId, bool trackChanges);
     }
 }

@@ -48,6 +48,7 @@ namespace Kwikker_Backend.Controllers
             var randomTimeline = await _service.TimelineService.GetRandomTimeline(UserId);
             return Ok(randomTimeline);
         }
+
         [HttpGet("LikedTweets/{UserId:int}")]
         public async Task<IActionResult> GetLikedTweetsByUser(int UserId)
         {
@@ -59,7 +60,7 @@ namespace Kwikker_Backend.Controllers
         [HttpGet("retweets/{UserId:int}")]
         public async Task<IActionResult> GetRetweetsByUser(int UserId)
         {
-            var retweets = await _service.RetweetService.GetUserRetweets(UserId, trackChanges: false);
+            var retweets = await _service.RetweetService.GetUserRetweets(UserId,trackChanges: false);
 
             return Ok(retweets);
         }

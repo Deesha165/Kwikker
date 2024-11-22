@@ -47,12 +47,12 @@ namespace Repository.RepositoryModels
             Delete(retweet);
         }
 
-     
-        public async Task<List<int>> GetRetweetsByUser(int UserId,  bool trackChanges)
+
+        public async Task<List<Tweet>> GetRetweetsByUser(int UserId, bool trackChanges)
         {
-            var Retweets =await FindByCondition(x => x.UserId.Equals(UserId), trackChanges)
-                .Select(x=>x.TweetId).ToListAsync();    
-            return  Retweets;
+            var retweets = FindByCondition(b => b.UserId == UserId, trackChanges)
+           .OrderBy(x => x.RetweetedAt).AsSplitQuery().Include(x => x.Tweet).ThenInclude(x => x.User).Select(x => x.Tweet).ToList();
+            return retweets;
         }
 
        

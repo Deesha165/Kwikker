@@ -18,7 +18,7 @@
 
         <button 
         [ngClass]="isFollowed(user.id) ? 'btn-unfollow fw-bold ms-auto' : 'btn-follow fw-bold ms-auto'"
-        (click)="checkFollow(user.id)">
+        (click)="checkFollow(user.id)" *ngIf="user.id!==userAppId">
         <span>{{ isFollowed(user.id) ? 'Unfollow' : 'Follow' }}</span>
       </button>
       </li>

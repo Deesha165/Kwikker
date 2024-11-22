@@ -5,7 +5,10 @@
 </div>
 
    <ul class="list-unstyled" style="margin:40px 20px">
-     <li *ngFor="let user of followers" class="mb-3" style="display: flex;">
+     <li *ngFor="let user of followers"   class="mb-3" style="display: flex;">
+      <div *ngIf="user.id!=userAppId">
+
+      </div>
        <a (click)="goToProfile(user.id)" class="text-decoration-none text-dark d-flex align-items-center">
          <img [src]="user?.profilePicture" alt="{{ user.userName}}" style="border-radius: 50%;">
          <div>
@@ -18,7 +21,7 @@
 
        <button 
        [ngClass]="isFollowed(user.id) ? 'btn-unfollow fw-bold ms-auto' : 'btn-follow fw-bold ms-auto'"
-       (click)="checkFollow(user.id)">
+       (click)="checkFollow(user.id)" *ngIf="user.id!==userAppId">
        <span>{{ isFollowed(user.id) ? 'Unfollow' : 'Follow' }}</span>
      </button>
      </li>

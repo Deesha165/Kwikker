@@ -40,6 +40,9 @@ namespace Service.ServiceModels
             _repository.BookmarkRepository.CreateBookmark(userId, tweetId);
             await _repository.SaveAsync();
 
+            var cacheKey = CacheKey + userId;
+            await _redisCache.KeyDeleteAsync(cacheKey);
+
         }
 
         public async Task DeleteBookmark(int userId, int tweetId, bool trackChanges)
@@ -48,9 +51,12 @@ namespace Service.ServiceModels
             if (bookmark is null) throw new CompositeKeyNotFoundException(userId, tweetId, "Follows", "User", "User");
             _repository.BookmarkRepository.DeleteBookmark(bookmark);
             await _repository.SaveAsync();
+
+            var cacheKey = CacheKey + userId;
+            await _redisCache.KeyDeleteAsync(cacheKey);
         }
 
-        public async Task <IEnumerable<int>> GetUserBookmarks (int userId,bool trackChanges)
+        public async Task <IEnumerable<TweetDTO>> GetUserBookmarks (int userId,bool trackChanges)
         {
             CacheKey +=$"{userId}";
 
@@ -61,18 +67,19 @@ namespace Service.ServiceModels
                 var bookmarks = await _repository.BookmarkRepository.GetBookmarksByUser(userId, trackChanges);
                 if (!bookmarks.Any())
                 {
-                    return Enumerable.Empty<int>();
+                    return Enumerable.Empty<TweetDTO>();
                 }
 
-               
+                var bookmarksDTOs = _mapper.Map<IEnumerable<TweetDTO>>(bookmarks);
 
-                var serializedBookmarks = JsonSerializer.Serialize(bookmarks);
+
+                var serializedBookmarks = JsonSerializer.Serialize(bookmarksDTOs);
 
                 await _redisCache.StringSetAsync(CacheKey, serializedBookmarks, CacheExpiration);
-                return bookmarks;
+                return bookmarksDTOs;
             }
 
-            var likedTweets = JsonSerializer.Deserialize<List<int>>(cachedBookmarks!);
+            var likedTweets = JsonSerializer.Deserialize<List<TweetDTO>>(cachedBookmarks!);
 
             return likedTweets!;
         }

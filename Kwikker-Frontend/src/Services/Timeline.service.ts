@@ -33,16 +33,16 @@ export class TimelineService
     (`${this.TimelinesUrl}/random/${userId}`,{headers:this.headers});
   }
 
-  getUserLikedTweets(userId: number): Observable< number[]> {
+  getUserLikedTweets(userId: number): Observable< CreatedTweet[]> {
 
     console.log('hello from timeline service');
-    return this.http.get<number[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`,{headers:this.headers});
+    return this.http.get<CreatedTweet[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`,{headers:this.headers});
 }
 
-getUserRetweets(userId: number): Observable< number[]> {
+getUserRetweets(userId: number): Observable< CreatedTweet[]> {
 
     console.log('hello from timeline service');
-    return this.http.get<number[]>(`${this.TimelinesUrl}/retweets/${userId}`,{headers:this.headers});
+    return this.http.get<CreatedTweet[]>(`${this.TimelinesUrl}/retweets/${userId}`,{headers:this.headers});
 }
 getProfile(userId: number, requestParameters: RequestParameters): Observable<{ tweets: CreatedTweet[], totalCount: number }> {
   return this.http.get<CreatedTweet[]>

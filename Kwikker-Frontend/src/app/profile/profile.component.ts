@@ -38,17 +38,23 @@ export class ProfileComponent implements AfterViewInit {
     CoverPicture: '',
     Profilepicture: ''
   };
-  profileTweets = new Set<CreatedTweet>();
+
   followers: CustomUser[] = [];
   followees: CustomUser[] = [];
   user!: CreatedUser;
   count: number = 0;
   showTweetPost: boolean = false;
   tweetForUpdate!: CreatedTweet;
-  allTweets = new Set<number>();
-  bookmarkes = new Set<number>();
-  likedTweets = new Set<number>();
-  userRetweets = new Set<number>();
+
+  allPostsIds=new Set<number>();
+  bookmarkesIds = new Set<number>();
+  likedTweetsIds = new Set<number>();
+  userRetweetsIds = new Set<number>();
+
+ allPosts=new Set<CreatedTweet>();
+  bookmarkes:CreatedTweet[]=[];
+  likedTweets :CreatedTweet[]=[];
+  userRetweets:CreatedTweet[]=[];
 
   @ViewChild('posts', { static: false }) posts!: ElementRef<HTMLButtonElement>;
   @ViewChild('likes', { static: false }) likes!: ElementRef<HTMLButtonElement>;
@@ -84,16 +90,14 @@ export class ProfileComponent implements AfterViewInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
       this.userId = +paramMap.get('id')!;
+      console.log(this.userId);
       this.fetchProfileData();
     });
   }
 
   ngAfterViewInit(): void {
     this.activeButton = this.posts;
-    this.getUserBookmarks();
-    this.getUserLikedTweets();
-    this.getUserRetweets();
-    this.getUserProfile();
+  
   }
 
   toggleLoading = () => (this.isLoading = !this.isLoading);
@@ -103,9 +107,18 @@ export class ProfileComponent implements AfterViewInit {
   };
 
   fetchProfileData(): void {
+   
+    this.requestParameters.PageNumber=1;
+    this.allPostsIds.clear();
+    this.allPosts.clear();
     this.getUser();
     this.getFollowers();
     this.getFollowees();
+    
+    this.getUserBookmarks();
+    this.getUserLikedTweets();
+    this.getUserRetweets();
+    this.getUserProfile();
   }
 
   getUser(): void {
@@ -118,6 +131,7 @@ export class ProfileComponent implements AfterViewInit {
   }
 
   getUserProfile(): void {
+    
     this.changeTapStatus(this.posts);
     this.toggleLoading();
     this.authService
@@ -126,9 +140,15 @@ export class ProfileComponent implements AfterViewInit {
       )
       .subscribe({
         next: (data) => {
+          
+          
           data.tweets.forEach((tweet) => {
-            this.profileTweets.add(tweet);
-            this.allTweets.add(tweet.id);
+            if(!this.allPostsIds.has(tweet.id))
+            {
+               this.allPosts.add(tweet);    
+              this.allPostsIds.add(tweet.id);
+            }
+            
           });
           this.count = data.totalCount;
           this.requestParameters.PageNumber++;
@@ -144,8 +164,18 @@ export class ProfileComponent implements AfterViewInit {
       .handleUnauthorized(() => this.bookmarksService.getBookmarks(this.userId))
       .subscribe({
         next: (data) => {
-          data.forEach((tweet) => this.bookmarkes.add(tweet));
-          this.count = this.bookmarkes.size;
+          this.bookmarkesIds.clear();
+          this.bookmarkes=data||[];
+          data.forEach((tweet) => {
+          
+            if(!this.bookmarkesIds.has(tweet.id))
+            {
+             
+              this.bookmarkesIds.add(tweet.id);
+            }
+            
+          });
+          this.count = this.bookmarkesIds.size;
         },
         error: (error) => console.error('Error fetching bookmarks:', error)
       });
@@ -159,8 +189,17 @@ export class ProfileComponent implements AfterViewInit {
       )
       .subscribe({
         next: (data) => {
-          data.forEach((tweet) => this.likedTweets.add(tweet));
-          this.count = this.likedTweets.size;
+          this.likedTweets=data||[];
+          this.likedTweetsIds.clear();
+          data.forEach((tweet) =>{
+            if(!this.likedTweetsIds.has(tweet.id))
+            {
+             
+              this.likedTweetsIds.add(tweet.id);
+            }
+            
+          } );
+          this.count = this.likedTweetsIds.size;
         },
         error: (error) => console.error('Error fetching liked tweets:', error)
       });
@@ -174,8 +213,17 @@ export class ProfileComponent implements AfterViewInit {
       )
       .subscribe({
         next: (data) => {
-          data.forEach((tweet) => this.userRetweets.add(tweet));
-          this.count = this.userRetweets.size;
+          this.userRetweets=data||[];
+          this.userRetweetsIds.clear();
+          data.forEach((tweet) => {
+            if(!this.userRetweetsIds.has(tweet.id))
+            {
+             
+              this.userRetweetsIds.add(tweet.id);
+            }
+          
+          });
+          this.count = this.userRetweetsIds.size;
         },
         error: (error) => console.error('Error fetching retweets:', error)
       });
@@ -219,7 +267,7 @@ export class ProfileComponent implements AfterViewInit {
 
   handleDeletion(tweet: CreatedTweet): void {
     this.authService.handleUnauthorized(()=>this.tweetService.removeTweet(tweet.id)).subscribe();
-    this.profileTweets.delete(tweet);
+    
   }
 
   handleUpdate(tweet: CreatedTweet): void {
@@ -271,12 +319,26 @@ export class ProfileComponent implements AfterViewInit {
     }
   }
 
-checkTweetExistense(id:number):boolean
-{
-  return (this.likedTweets.has(id) && this.activeButton==this.likes) || 
-        (this.bookmarkes.has(id) && this.activeButton==this.bookmarks) || 
-        (this.allTweets.has(id) && this.activeButton ==this.posts)||
-        (this.userRetweets.has(id) && this.activeButton ==this.retweets)
+
+isPosts():boolean{
+  return this.activeButton==this.posts;
+}
+isLikes():boolean{
+  return this.activeButton==this.likes;
+}
+isRetweets():boolean{
+  return this.activeButton==this.retweets;
+}
+isbookmarkes():boolean{
+  return this.activeButton==this.bookmarks;
+}
+
+getPosts():CreatedTweet[]{
+if(this.isbookmarkes()) return this.bookmarkes;
+else if(this.isLikes()) return this.likedTweets;
+else if (this.isRetweets()) return this.userRetweets;
+
+return [...this.allPosts];
 }
 
 }

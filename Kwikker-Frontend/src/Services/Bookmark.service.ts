@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CreatedTweet } from '../Models/Tweet.model';
 
 @Injectable({
     providedIn: 'root'
@@ -16,8 +17,8 @@ export class BookmarkService {
   
   }
 
-    getBookmarks(userId: number): Observable< number[]> {
-      return this.http.get<number[]>(`${this.BookmarksUrl}/${userId}`,{headers:this.headers});
+    getBookmarks(userId: number): Observable< CreatedTweet[]> {
+      return this.http.get<CreatedTweet[]>(`${this.BookmarksUrl}/${userId}`,{headers:this.headers});
 
     }
     createBookmark(userId:number,tweetId:number):Observable<any>{

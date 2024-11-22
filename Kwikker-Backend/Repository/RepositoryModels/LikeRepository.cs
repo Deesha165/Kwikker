@@ -44,13 +44,11 @@ namespace Repository.RepositoryModels
             Delete(like);
         }
     
-        public async Task<List<int>> GetLikedTweetsByUser(int UserId, bool trackChanges)
+        public async Task<List<Tweet>> GetLikedTweetsByUser(int UserId, bool trackChanges)
         {
             // Build the query with a join and filtering logic
-            var likes = await FindByCondition(b => b.UserId == UserId, trackChanges)
-                .Select(x=>x.TweetId).ToListAsync();    
-
-
+            var likes = FindByCondition(b => b.UserId == UserId, trackChanges)
+             .OrderBy(x => x.LikedAt).AsSplitQuery().Include(x => x.Tweet).ThenInclude(x => x.User).Select(x=>x.Tweet).ToList();
             return likes;
         }
     }

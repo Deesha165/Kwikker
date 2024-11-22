@@ -44,7 +44,9 @@ namespace Service.ServiceModels
 
            _repository.LikeRepository.CreateLike(userId, tweetid);
 
-
+            var cacheKey = CacheKey + userId;
+            await _redisCache.KeyDeleteAsync(cacheKey);
+            
             // Notify user
             string notificationMessage = $"{user.UserName} has like your tweet";
             await _notification.CreateNotification(userId, "Liked", tweet.UserID);
@@ -65,10 +67,14 @@ namespace Service.ServiceModels
 
             _repository.LikeRepository.DeleteLike(like);
             await _repository.SaveAsync();
+
+
+            var cacheKey = CacheKey + userId;
+            await _redisCache.KeyDeleteAsync(cacheKey);
         }
 
 
-        public async Task<IEnumerable<int>> GetUserLikedTweets(int userId, bool trackChanges)
+        public async Task<IEnumerable<TweetDTO>> GetUserLikedTweets(int userId, bool trackChanges)
         {
             CacheKey += $"{userId}";
             var cachedTweets = await _redisCache.StringGetAsync(CacheKey);
@@ -79,10 +85,10 @@ namespace Service.ServiceModels
 
                 if (!likedTweetsWithMetaData.Any())
                 {
-                    return Enumerable.Empty<int>();
+                    return Enumerable.Empty<TweetDTO>();
                 }
 
-                var likedTweetsDTOs = _mapper.Map<IEnumerable<int>>(likedTweetsWithMetaData);
+                var likedTweetsDTOs = _mapper.Map<IEnumerable<TweetDTO>>(likedTweetsWithMetaData);
 
                 var serializedLikedTweets = JsonSerializer.Serialize(likedTweetsDTOs);
 
@@ -91,7 +97,7 @@ namespace Service.ServiceModels
                 return likedTweetsDTOs;
             }
 
-            var likedTweets = JsonSerializer.Deserialize<List<int>>(cachedTweets!);
+            var likedTweets = JsonSerializer.Deserialize<List<TweetDTO>>(cachedTweets!);
             return likedTweets!;
            
         }

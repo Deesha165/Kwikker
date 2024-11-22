@@ -15,6 +15,6 @@ namespace Repository.Contracts.Contracts
         void DeleteLike(Like like);
         Task<Like> GetLike(int userId, int tweetId,bool trackChanges);
 
-        Task<List<int>> GetLikedTweetsByUser(int UserId,  bool trackChanges);
+        Task<List<Tweet>> GetLikedTweetsByUser(int UserId,  bool trackChanges);
     }
 }

@@ -59,6 +59,9 @@ namespace Service.ServiceModels
 
 
             await _repository.SaveAsync();
+
+            var cacheKey = CacheKey + userId;
+            await _redisCache.KeyDeleteAsync(cacheKey);
         }
 
         public async Task DeleteRetweet(int userId, int tweetid, bool trackChanges)
@@ -68,9 +71,12 @@ namespace Service.ServiceModels
 
             _repository.RetweetRepository.DeleteRetweet(retweet);
             await _repository.SaveAsync();
+
+            var cacheKey = CacheKey + userId;
+            await _redisCache.KeyDeleteAsync(cacheKey);
         }
 
-        public async Task<IEnumerable<int>> GetUserRetweets(int userId, bool trackChanges)
+        public async Task<IEnumerable<TweetDTO>> GetUserRetweets(int userId,bool trackChanges)
         {
             CacheKey += $"{userId}";
 
@@ -78,13 +84,13 @@ namespace Service.ServiceModels
 
             if (!cachedRetweets.HasValue)
             {
-                var Retweets = await _repository.RetweetRepository.GetRetweetsByUser(userId, trackChanges);
+                var Retweets = await _repository.RetweetRepository.GetRetweetsByUser(userId,  trackChanges);
                 if (!Retweets.Any())
                 {
-                    return Enumerable.Empty<int>();
+                    return Enumerable.Empty<TweetDTO>();
                 }
 
-                var RetweetDTOs = _mapper.Map<IEnumerable<int>>(Retweets);
+                var RetweetDTOs = _mapper.Map<IEnumerable<TweetDTO>>(Retweets);
 
                 var serializedRetweets = JsonSerializer.Serialize(RetweetDTOs);
 
@@ -92,7 +98,7 @@ namespace Service.ServiceModels
                 return RetweetDTOs;
             }
 
-            var retweets = JsonSerializer.Deserialize<List<int>>(cachedRetweets!);
+            var retweets = JsonSerializer.Deserialize<List<TweetDTO>>(cachedRetweets!);
 
             return retweets!;
         }

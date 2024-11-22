@@ -46,13 +46,11 @@ namespace Repository.RepositoryModels
             return bookmark!;
         }
 
-        public async Task<List<int>> GetBookmarksByUser(int UserId, bool trackChanges)
+        public async Task<List<Tweet>> GetBookmarksByUser(int UserId, bool trackChanges)
         {
-            // Build the query with a join and filtering logic
-            var bookmarks = await FindByCondition(b => b.UserId == UserId, trackChanges)
-                .Select(x=>x.TweetId).ToListAsync();
-
-            return bookmarks;
+            var likes = FindByCondition(b => b.UserId == UserId, trackChanges)
+           .OrderBy(x => x.BookmarkedAt).AsSplitQuery().Include(x => x.Tweet).ThenInclude(x => x.User).Select(x => x.Tweet).ToList();
+            return likes;
         }
         
     }

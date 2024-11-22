@@ -44,7 +44,8 @@
 
         <div style="display: flex; cursor: pointer;" (click)="goToProfile(this.userId)">
           <div>
-            <img  [src]="user?.ProfilePicture ? user.ProfilePicture : 'assets/default.avif'" alt="Profile" class="profile-img">
+            <img  [src]="user?.ProfilePicture ? user.ProfilePicture : 'assets/default.avif'" 
+            alt="Profile" class="profile-img" style="border-radius:50%">
            
           </div>
          <div style="margin-left: 5px">

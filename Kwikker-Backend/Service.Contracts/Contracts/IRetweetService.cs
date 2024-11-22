@@ -17,7 +17,7 @@ namespace Service.Contracts.Contracts
 
         Task DeleteRetweet(int userId, int tweetid, bool trackChanges);
 
-        Task<IEnumerable<int>> GetUserRetweets(int userId, bool trackChanges);
+        Task<IEnumerable<TweetDTO>> GetUserRetweets(int userId, bool trackChanges);
 
     }
 }

@@ -61,21 +61,20 @@
   </div>
 
   <!-- Content Section (Posts, Likes, etc.) -->
-  <div *ngIf="profileTweets.size > 0; else noTweets">
-    <div *ngFor="let tweet of profileTweets">
+  <div *ngIf="(allPosts.size > 0||likedTweets.length>0 ||bookmarkes.length>0 || userRetweets.length>0) ; else noTweets">
+    <div *ngFor="let tweet of getPosts()">
       <app-tweet 
-        *ngIf="checkTweetExistense(tweet.id)"
+    
 
         [tweet]="tweet"
         
-        [isLiked]="likedTweets.has(tweet.id)"
-        [isBookmarked]="bookmarkes.has(tweet.id)"
-        [isRetweeted]="userRetweets.has(tweet.id)"
+        [isLiked]="likedTweetsIds.has(tweet.id)"
+        [isBookmarked]="bookmarkesIds.has(tweet.id)"
+        [isRetweeted]="userRetweetsIds.has(tweet.id)"
         (tweetDeleted)="handleDeletion($event)"
         (updateTweet)="receiveForUpdate($event)">
       </app-tweet>
 
-      
     </div>
 
     <!-- Loading Indicator -->

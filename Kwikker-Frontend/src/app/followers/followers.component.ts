@@ -15,17 +15,21 @@ import { AuthenticationService } from '../../Services/Authentication.service';
 export class FollowersComponent {
 
   followers:CustomUser[]=[];
-
-  followerId=0;
-  
-  followStates: { [userId: number]: boolean } = {};
+  userAppFollowees=new Set<number>();
+  userAppId=0;// for authenticated user
+  followerId=0;// for profile user
 
 activeButton!:ElementRef<HTMLButtonElement>;
 
   constructor (private followService:FollowService,private router:Router
     ,private route:ActivatedRoute,private authService:AuthenticationService)
     {
-     
+      const storedUserId = localStorage.getItem('userId');
+
+      // Check if 'userId' exists and is a valid number
+      if (storedUserId) {
+        this.userAppId = parseInt(storedUserId, 10); // parseInt with base 10
+      }
     }
 
   @ViewChild('followersbtn') followersbtn!:ElementRef<HTMLButtonElement>; 
@@ -35,6 +39,7 @@ activeButton!:ElementRef<HTMLButtonElement>;
       this.followerId = +paramMap.get('id')!; // Extract userId from route
         this.getFollowers();   
     });
+    this.getUserAppFollowees();
   }
 
 
@@ -59,30 +64,46 @@ this.authService.handleUnauthorized(()=>this.followService.getFollowers(this.fol
 }
 
 
-
+getUserAppFollowees():void{
+  
+  this.authService.handleUnauthorized(()=>this.followService.getFollowees(this.userAppId))
+  .subscribe((data)=>{
+    this.userAppFollowees.clear();
+    data.forEach(user=>{
+      this.userAppFollowees.add(user.id);
+    })
+    
+    },(error)=>{
+     console.log('error at fetching followees data',(error));
+    })
+  }
 
 checkFollow(followeeId: number): void {
 
-  if(this.followStates[followeeId])
+  if(this.isFollowed(followeeId))
     {
 
-      this.authService.handleUnauthorized(()=>this.followService.removeFollow(this.followerId,followeeId))
+      this.authService.handleUnauthorized(()=>this.followService.removeFollow(this.userAppId,followeeId))
       .subscribe((response)=>{
         console.log(response);
+
+        this.userAppFollowees.delete(followeeId);
        })
+
     }
     else{
-      this.authService.handleUnauthorized(()=>this.followService.createFollow(this.followerId,followeeId))
+      this.authService.handleUnauthorized(()=>this.followService.createFollow(this.userAppId,followeeId))
       .subscribe((response)=>{
         console.log(response);
+        this.userAppFollowees.add(followeeId);
       });
     }
-  this.followStates[followeeId] = !this.followStates[followeeId]; // Toggle the follow state for the specific user
+ 
 }
 
 isFollowed(followeeId: number): boolean {
      
-  return this.followStates[followeeId] || false; // Return follow state or false if not defined
+  return  this.userAppFollowees.has(followeeId); 
 }
 
 
