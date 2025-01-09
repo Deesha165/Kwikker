@@ -1,17 +1,19 @@
 # Kwikker
 
 Kwikker is a dynamic social media application designed to facilitate seamless interaction among users through features such as tweeting, liking, and real-time notifications.
-![Video Title](https://www.youtube.com/watch?v=DNTpkiRGVpU&t=20s)
 
-##  Tech Stack
+<!-- Embed YouTube Video -->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DNTpkiRGVpU?start=20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Tech Stack
 
 - **Languages**: C#, TypeScript.
 - **Frameworks**: ASP.NET Core, Angular, Entity Framework Core.
 - **Databases**: SQL Server, Redis (for caching).
 - **Real-time Communication**: SignalR.
 - **Tools**: Git, Postman, Hangfire (for background tasks), AutoMapper, LINQ, Dynamic LINQ.
-  
-##  Features
+
+## Features
 
 - **Tweeting System**: Users can create, read, update, and delete tweets, retweeting and bookmarking.
 - **Following users**: Added ability to follow and unfollow users and suggest news based on these followings.
@@ -27,10 +29,8 @@ Kwikker is a dynamic social media application designed to facilitate seamless in
 - **Paging**: For efficient Api data fetching.
 - **Data Shaping**: For dynamic Api data fetching.
 
-##  Design Patterns
+## Design Patterns
 
 - **Lazy Instantiation**: To manage Services and Repositories to be instantiated only when required for better performance.  
 - **Repository Pattern**: To abstract data access and make the application more modular.
 - **Dependency Injection**: To manage dependencies and enhance testability.
-  
-
