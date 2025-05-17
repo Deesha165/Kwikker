@@ -2,7 +2,7 @@
 
 Kwikker is a dynamic social media application designed to facilitate seamless interaction among users through features such as tweeting, liking, and real-time notifications.
 
-[![Video Title](https://img.youtube.com/vi/DNTpkiRGVpU/0.jpg)](https://www.youtube.com/watch?v=DNTpkiRGVpU&t=20s)
+[![Video Title](https://img.youtube.com/vi/SY)]()
 
 ## Tech Stack
 
